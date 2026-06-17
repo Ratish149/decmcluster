@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_filters",
     "account",
     "contact",
+    "useful_link",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
