@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "account",
     "contact",
     "useful_link",
+    "assessment",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -59,11 +60,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://billy-mins-dried-marina.trycloudflare.com",
+    "https://newly-institutional-nec-combat.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://billy-mins-dried-marina.trycloudflare.com",
+    "https://newly-institutional-nec-combat.trycloudflare.com",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

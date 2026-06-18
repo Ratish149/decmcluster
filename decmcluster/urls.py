@@ -26,6 +26,7 @@ urlpatterns = (
         path("api/account/", include("account.urls")),
         path("api/", include("contact.urls")),
         path("api/", include("useful_link.urls")),
+        path("api/", include("assessment.urls")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

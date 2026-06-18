@@ -1,0 +1,66 @@
+from django.shortcuts import get_object_or_404
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
+from account.permissions import IsSuperAdmin
+
+from .models import Assessment, AssessmentResult
+from .serializers import AssessmentResultSerializer, AssessmentSerializer
+
+
+class AssessmentListCreateAPIView(ListCreateAPIView):
+    queryset = Assessment.objects.all().order_by("-created_at")
+    serializer_class = AssessmentSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), IsSuperAdmin()]
+
+
+class AssessmentDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Assessment.objects.all()
+    serializer_class = AssessmentSerializer
+    lookup_field = "slug"
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), IsSuperAdmin()]
+
+
+class AssessmentResultListCreateAPIView(ListCreateAPIView):
+    serializer_class = AssessmentResultSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), IsSuperAdmin()]
+
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        assessment = get_object_or_404(Assessment, slug=slug)
+        return AssessmentResult.objects.filter(assessment=assessment).order_by(
+            "-created_at"
+        )
+
+    def perform_create(self, serializer):
+        slug = self.kwargs.get("slug")
+        assessment = get_object_or_404(Assessment, slug=slug)
+        serializer.save(assessment=assessment)
+
+
+class AssessmentResultDetailAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = AssessmentResultSerializer
+    lookup_field = "pk"
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), IsSuperAdmin()]
+
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        assessment = get_object_or_404(Assessment, slug=slug)
+        return AssessmentResult.objects.filter(assessment=assessment)
+
