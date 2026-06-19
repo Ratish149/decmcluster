@@ -5,7 +5,7 @@ from .models import Assessment, AssessmentResult
 
 @admin.register(Assessment)
 class AssessmentAdmin(admin.ModelAdmin):
-    list_display = ["id", "name", "slug", "created_at", "updated_at"]
+    list_display = ["name", "slug", "created_at", "updated_at"]
     search_fields = ["name", "slug", "description"]
     list_filter = ["created_at", "updated_at"]
     prepopulated_fields = {"slug": ("name",)}
@@ -13,6 +13,6 @@ class AssessmentAdmin(admin.ModelAdmin):
 
 @admin.register(AssessmentResult)
 class AssessmentResultAdmin(admin.ModelAdmin):
-    list_display = ["id", "assessment", "title", "created_at", "updated_at"]
+    list_display = ["assessment", "title", "created_at", "updated_at"]
     search_fields = ["title", "description", "assessment__name"]
     list_filter = ["assessment", "created_at", "updated_at"]

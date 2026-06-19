@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "assessment",
     "report",
     "response_tracking",
+    "contact_list",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
