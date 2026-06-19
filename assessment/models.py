@@ -8,7 +8,8 @@ class Assessment(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(null=True, blank=True, max_length=255)
     description = models.TextField(null=True, blank=True)
-    file = models.FileField(upload_to="assessment/", null=True, blank=True)
+    pdf = models.FileField(upload_to="assessment/pdf/", null=True, blank=True)
+    excel = models.FileField(upload_to="assessment/excel/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

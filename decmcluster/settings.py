@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "contact",
     "useful_link",
     "assessment",
+    "report",
+    "response_tracking",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -60,11 +62,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://newly-institutional-nec-combat.trycloudflare.com",
+    "https://med-ppm-penalty-genuine.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://newly-institutional-nec-combat.trycloudflare.com",
+    "https://med-ppm-penalty-genuine.trycloudflare.com",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

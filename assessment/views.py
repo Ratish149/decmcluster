@@ -63,4 +63,3 @@ class AssessmentResultDetailAPIView(RetrieveUpdateDestroyAPIView):
         slug = self.kwargs.get("slug")
         assessment = get_object_or_404(Assessment, slug=slug)
         return AssessmentResult.objects.filter(assessment=assessment)
-

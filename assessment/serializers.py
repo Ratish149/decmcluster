@@ -11,7 +11,8 @@ class AssessmentSerializer(serializers.ModelSerializer):
             "name",
             "slug",
             "description",
-            "file",
+            "pdf",
+            "excel",
             "created_at",
             "updated_at",
         ]
