@@ -4,6 +4,9 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from training.models import Training
+from useful_link.models import UsefulLink
+
 User = get_user_model()
 
 
@@ -396,6 +399,73 @@ class RoleBasedPermissionTests(APITestCase):
         assert response.status_code == status.HTTP_200_OK
 
         # Superadmin CAN delete
+        response = self.client.delete(self.detail_url)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+class TrainingAPITests(APITestCase):
+    def setUp(self):
+        self.superadmin = User.objects.create_superuser(
+            username="superadmin_tr@example.com",
+            email="superadmin_tr@example.com",
+            password="password123",
+        )
+        self.viewer = User.objects.create_user(
+            username="viewer_tr@example.com",
+            email="viewer_tr@example.com",
+            password="password123",
+            role=User.Role.VIEWER,
+            is_active=True,
+        )
+        self.enumerator = User.objects.create_user(
+            username="enumerator_tr@example.com",
+            email="enumerator_tr@example.com",
+            password="password123",
+            role=User.Role.DATA_ENUMERATOR,
+            is_active=True,
+        )
+
+        self.training = Training.objects.create(
+            name="Disaster Preparedness",
+            duration="3 days",
+            link="https://example.com/prep",
+        )
+
+        self.list_url = reverse("training-list-create")
+        self.detail_url = reverse("training-detail", kwargs={"pk": self.training.pk})
+
+    def test_anonymous_and_role_based_permissions(self):
+        # Anonymous can view list and detail (GET is AllowAny)
+        response = self.client.get(self.list_url)
+        assert response.status_code == status.HTTP_200_OK
+        response = self.client.get(self.detail_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Anonymous CANNOT create
+        response = self.client.post(self.list_url, {"name": "New Training", "duration": "1 day", "link": "https://example.com"})
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+        # Viewer can view but CANNOT create
+        self.client.force_authenticate(user=self.viewer)
+        response = self.client.post(self.list_url, {"name": "New Training", "duration": "1 day", "link": "https://example.com"})
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+        # Data Enumerator can view and CAN create
+        self.client.force_authenticate(user=self.enumerator)
+        response = self.client.post(self.list_url, {"name": "New Training", "duration": "1 day", "link": "https://example.com"})
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data["name"] == "New Training"
+
+        # Data Enumerator CANNOT delete or update
+        response = self.client.patch(self.detail_url, {"name": "Updated Training"})
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        response = self.client.delete(self.detail_url)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+        # Superadmin can do anything
+        self.client.force_authenticate(user=self.superadmin)
+        response = self.client.patch(self.detail_url, {"name": "Super Admin Updated Training"})
+        assert response.status_code == status.HTTP_200_OK
         response = self.client.delete(self.detail_url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
