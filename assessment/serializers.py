@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Assessment, AssessmentRegistry, AssessmentResult
+from .models import Assessment, AssessmentRegistry, AssessmentResult, AssessmentStats
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
@@ -47,6 +47,19 @@ class AssessmentRegistrySerializer(serializers.ModelSerializer):
             "frequency",
             "name_of_survey_tool",
             "last_survey_conducted",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+
+class AssessmentStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssessmentStats
+        fields = [
+            "id",
+            "name",
+            "count",
             "created_at",
             "updated_at",
         ]

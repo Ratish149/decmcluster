@@ -5,11 +5,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from account.permissions import RoleBasedPermission
 from decmcluster.pagination import CustomPagination
 
-from .models import Assessment, AssessmentRegistry, AssessmentResult
+from .models import Assessment, AssessmentRegistry, AssessmentResult, AssessmentStats
 from .serializers import (
     AssessmentRegistrySerializer,
     AssessmentResultSerializer,
     AssessmentSerializer,
+    AssessmentStatsSerializer,
 )
 
 
@@ -84,6 +85,28 @@ class AssessmentRegistryListCreateAPIView(ListCreateAPIView):
 class AssessmentRegistryDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = AssessmentRegistry.objects.all()
     serializer_class = AssessmentRegistrySerializer
+    lookup_field = "pk"
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), RoleBasedPermission()]
+
+
+class AssessmentStatsListCreateAPIView(ListCreateAPIView):
+    queryset = AssessmentStats.objects.all().order_by("-created_at")
+    serializer_class = AssessmentStatsSerializer
+    pagination_class = CustomPagination
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), RoleBasedPermission()]
+
+
+class AssessmentStatsDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = AssessmentStats.objects.all()
+    serializer_class = AssessmentStatsSerializer
     lookup_field = "pk"
 
     def get_permissions(self):

@@ -1,7 +1,13 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from .models import Assessment, AssessmentRegistry, AssessmentResult
+from .models import (
+    Assessment,
+    AssessmentAnalytics,
+    AssessmentRegistry,
+    AssessmentResult,
+    AssessmentStats,
+)
 
 
 @admin.register(Assessment)
@@ -30,3 +36,17 @@ class AssessmentRegistryAdmin(ModelAdmin):
     ]
     search_fields = ["types_of_survey", "level_of_survey", "name_of_survey_tool"]
     list_filter = ["level_of_survey", "last_survey_conducted", "created_at"]
+
+
+@admin.register(AssessmentStats)
+class AssessmentStatsAdmin(ModelAdmin):
+    list_display = ["name", "count", "created_at", "updated_at"]
+    search_fields = ["name"]
+    list_filter = ["created_at", "updated_at"]
+
+
+@admin.register(AssessmentAnalytics)
+class AssessmentAnalyticsAdmin(ModelAdmin):
+    list_display = ["name", "count", "created_at", "updated_at"]
+    search_fields = ["name"]
+    list_filter = ["created_at", "updated_at"]

@@ -7,6 +7,8 @@ from .views import (
     AssessmentRegistryListCreateAPIView,
     AssessmentResultDetailAPIView,
     AssessmentResultListCreateAPIView,
+    AssessmentStatsDetailAPIView,
+    AssessmentStatsListCreateAPIView,
 )
 
 urlpatterns = [
@@ -39,5 +41,15 @@ urlpatterns = [
         "assessment-registry/<int:pk>/",
         AssessmentRegistryDetailAPIView.as_view(),
         name="assessment-registry-detail",
+    ),
+    path(
+        "assessment-stats/",
+        AssessmentStatsListCreateAPIView.as_view(),
+        name="assessment-stats-list-create",
+    ),
+    path(
+        "assessment-stats/<int:pk>/",
+        AssessmentStatsDetailAPIView.as_view(),
+        name="assessment-stats-detail",
     ),
 ]
