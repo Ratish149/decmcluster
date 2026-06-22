@@ -21,7 +21,7 @@ class MapCategory(models.Model):
 class Map(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(MapCategory, on_delete=models.CASCADE)
-    file = models.FileField(upload_to="map")
+    image = models.FileField(upload_to="map")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

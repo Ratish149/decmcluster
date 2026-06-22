@@ -13,7 +13,6 @@ class ContactListAdmin(ModelAdmin):
         "cluster",
         "phone",
         "email",
-        "created_at",
     ]
     search_fields = ["name", "organization", "cluster", "email"]
     list_filter = ["type", "cluster", "created_at", "updated_at"]

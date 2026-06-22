@@ -11,9 +11,9 @@ from .models import (
 
 @admin.register(Assessment)
 class AssessmentAdmin(ModelAdmin):
-    list_display = ["name", "slug", "created_at", "updated_at"]
+    list_display = ["name", "slug", "created_at"]
     search_fields = ["name", "slug", "description"]
-    list_filter = ["created_at", "updated_at"]
+    list_filter = ["created_at"]
     prepopulated_fields = {"slug": ("name",)}
 
 
@@ -31,7 +31,6 @@ class AssessmentRegistryAdmin(ModelAdmin):
         "level_of_survey",
         "frequency",
         "last_survey_conducted",
-        "created_at",
     ]
     search_fields = ["types_of_survey", "level_of_survey", "name_of_survey_tool"]
     list_filter = ["level_of_survey", "last_survey_conducted", "created_at"]
@@ -39,6 +38,6 @@ class AssessmentRegistryAdmin(ModelAdmin):
 
 @admin.register(AssessmentStats)
 class AssessmentStatsAdmin(ModelAdmin):
-    list_display = ["name", "count", "created_at", "updated_at"]
+    list_display = ["name", "count"]
     search_fields = ["name"]
-    list_filter = ["created_at", "updated_at"]
+    list_filter = ["created_at"]

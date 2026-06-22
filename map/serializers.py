@@ -9,6 +9,7 @@ class MapCategorySerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "slug",
             "created_at",
             "updated_at",
         ]
@@ -25,7 +26,7 @@ class MapSerializer(serializers.ModelSerializer):
             "name",
             "category",
             "category_name",
-            "file",
+            "image",
             "created_at",
             "updated_at",
         ]

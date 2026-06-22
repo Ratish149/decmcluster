@@ -6,6 +6,6 @@ from .models import ResponseTracking
 
 @admin.register(ResponseTracking)
 class ResponseTrackingAdmin(ModelAdmin):
-    list_display = ["name", "created_at", "updated_at"]
+    list_display = ["name", "created_at"]
     search_fields = ["name"]
-    list_filter = ["created_at", "updated_at"]
+    list_filter = ["created_at"]

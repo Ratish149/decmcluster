@@ -48,7 +48,7 @@ class MapListCreateAPIView(ListCreateAPIView):
         queryset = Map.objects.all().order_by("-created_at")
         category_slug = self.request.query_params.get("category")
         if category_slug:
-            queryset = queryset.filter(category_slug=category_slug)
+            queryset = queryset.filter(category__slug=category_slug)
         return queryset
 
 
