@@ -33,3 +33,16 @@ class AssessmentResult(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class AssessmentRegistry(models.Model):
+    types_of_survey = models.CharField(max_length=255)
+    level_of_survey = models.CharField(max_length=255)
+    frequency = models.CharField(max_length=255, null=True, blank=True)
+    name_of_survey_tool = models.TextField(null=True, blank=True)
+    last_survey_conducted = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.types_of_survey

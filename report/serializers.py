@@ -10,6 +10,9 @@ class ReportSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "file",
+            "type",
+            "url",
+            "date",
             "created_at",
             "updated_at",
         ]

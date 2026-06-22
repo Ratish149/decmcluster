@@ -3,6 +3,8 @@ from django.urls import path
 from .views import (
     AssessmentDetailAPIView,
     AssessmentListCreateAPIView,
+    AssessmentRegistryDetailAPIView,
+    AssessmentRegistryListCreateAPIView,
     AssessmentResultDetailAPIView,
     AssessmentResultListCreateAPIView,
 )
@@ -27,5 +29,15 @@ urlpatterns = [
         "assessment/<slug:slug>/result/<int:pk>/",
         AssessmentResultDetailAPIView.as_view(),
         name="assessment-result-detail",
+    ),
+    path(
+        "assessment-registry/",
+        AssessmentRegistryListCreateAPIView.as_view(),
+        name="assessment-registry-list-create",
+    ),
+    path(
+        "assessment-registry/<int:pk>/",
+        AssessmentRegistryDetailAPIView.as_view(),
+        name="assessment-registry-detail",
     ),
 ]

@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from account.permissions import RoleBasedPermission
+from decmcluster.pagination import CustomPagination
 
 from .models import Report
 from .serializers import ReportSerializer
@@ -10,6 +11,8 @@ from .serializers import ReportSerializer
 
 class ReportListCreateAPIView(ListCreateAPIView):
     serializer_class = ReportSerializer
+    pagination_class = CustomPagination
+
     filter_backends = [filters.SearchFilter]
     search_fields = ["name"]
 
