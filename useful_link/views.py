@@ -1,7 +1,7 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from account.permissions import IsSuperAdmin
+from account.permissions import RoleBasedPermission
 
 from .models import UsefulLink
 from .serializers import UsefulLinkSerializer
@@ -14,7 +14,7 @@ class UsefulLinkListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
 
 class UsefulLinkDetailAPIView(RetrieveUpdateDestroyAPIView):
@@ -24,4 +24,4 @@ class UsefulLinkDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]

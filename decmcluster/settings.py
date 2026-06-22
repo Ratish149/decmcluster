@@ -63,11 +63,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://med-ppm-penalty-genuine.trycloudflare.com",
+    "https://bee-interests-joy-gray.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://med-ppm-penalty-genuine.trycloudflare.com",
+    "https://bee-interests-joy-gray.trycloudflare.com",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

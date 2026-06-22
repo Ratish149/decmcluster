@@ -2,7 +2,7 @@ from rest_framework import filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from account.permissions import IsSuperAdmin
+from account.permissions import RoleBasedPermission
 
 from .models import ContactList
 from .serializers import ContactListSerializer
@@ -16,7 +16,7 @@ class ContactListListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
         queryset = ContactList.objects.all().order_by("order")
@@ -39,4 +39,4 @@ class ContactListDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]

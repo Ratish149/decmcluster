@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from account.permissions import IsSuperAdmin
+from account.permissions import RoleBasedPermission
 
 from .models import Assessment, AssessmentResult
 from .serializers import AssessmentResultSerializer, AssessmentSerializer
@@ -15,7 +15,7 @@ class AssessmentListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
 
 class AssessmentDetailAPIView(RetrieveUpdateDestroyAPIView):
@@ -26,7 +26,7 @@ class AssessmentDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
 
 class AssessmentResultListCreateAPIView(ListCreateAPIView):
@@ -35,7 +35,7 @@ class AssessmentResultListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
@@ -57,7 +57,7 @@ class AssessmentResultDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")

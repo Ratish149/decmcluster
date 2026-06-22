@@ -13,13 +13,28 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "email", "password", "first_name", "last_name", "is_active")
+        fields = ("id", "email", "password", "first_name", "last_name", "is_active", "role")
         extra_kwargs = {
             "email": {"required": True, "allow_blank": False},
             "first_name": {"required": False, "allow_blank": True},
             "last_name": {"required": False, "allow_blank": True},
             "is_active": {"required": False, "default": False},
+            "role": {"required": False},
         }
+
+    def validate_role(self, value):
+        request = self.context.get("request")
+        if value == User.Role.SUPERADMIN:
+            if not request or not request.user or not (
+                request.user.is_authenticated
+                and (
+                    request.user.role == User.Role.SUPERADMIN
+                    or request.user.is_staff
+                    or request.user.is_superuser
+                )
+            ):
+                raise serializers.ValidationError("Only superadmins can create superadmin accounts.")
+        return value
 
     def validate_email(self, value):
         if User.objects.filter(
@@ -31,7 +46,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         email = validated_data["email"]
         is_active = validated_data.get("is_active", True)
-        # Create user with username same as email, and dynamic is_active state
+        # Create user with username same as email, dynamic is_active state, and role
         user = User.objects.create_user(
             username=email,
             email=email,
@@ -39,6 +54,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             first_name=validated_data.get("first_name", ""),
             last_name=validated_data.get("last_name", ""),
             is_active=is_active,
+            role=validated_data.get("role", User.Role.VIEWER),
         )
         return user
 
@@ -82,6 +98,9 @@ class UserLoginSerializer(serializers.Serializer):
         access_token["first_name"] = user.first_name
         access_token["last_name"] = user.last_name
         access_token["is_active"] = user.is_active
+        access_token["role"] = user.role
+        access_token["is_staff"] = user.is_staff
+        access_token["is_superuser"] = user.is_superuser
 
         return {
             "refresh": str(refresh),
@@ -100,5 +119,7 @@ class SuperAdminUserSerializer(serializers.ModelSerializer):
             "last_name",
             "is_active",
             "is_superuser",
+            "is_staff",
+            "role",
             "date_joined",
         )

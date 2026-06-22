@@ -236,3 +236,166 @@ class UserAuthTests(APITestCase):
 
         assert not User.objects.filter(pk=self.active_user.pk).exists()
 
+    def test_registration_superadmin_prevented_for_anonymous(self):
+        data = {
+            "email": "hacker@example.com",
+            "password": "password123",
+            "role": "superadmin",
+        }
+        response = self.client.post(self.register_url, data, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "role" in response.data
+
+    def test_superuser_create_superadmin_success(self):
+        self.client.force_authenticate(user=self.superadmin)
+        url = reverse("superuser-user-list")
+        data = {
+            "email": "newadmin@example.com",
+            "password": "createdpassword123",
+            "role": "superadmin",
+            "is_active": True,
+        }
+        response = self.client.post(url, data, format="json")
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data["role"] == "superadmin"
+
+        # Verify db status
+        new_user = User.objects.get(email="newadmin@example.com")
+        assert new_user.role == "superadmin"
+        assert new_user.is_superuser is True
+
+
+class RoleBasedPermissionTests(APITestCase):
+    def setUp(self):
+        from useful_link.models import UsefulLink
+
+        # Create users with different roles
+        self.superadmin = User.objects.create_superuser(
+            username="superadmin_test@example.com",
+            email="superadmin_test@example.com",
+            password="password123",
+        )
+        self.viewer = User.objects.create_user(
+            username="viewer_test@example.com",
+            email="viewer_test@example.com",
+            password="password123",
+            role=User.Role.VIEWER,
+            is_active=True,
+        )
+        self.enumerator = User.objects.create_user(
+            username="enumerator_test@example.com",
+            email="enumerator_test@example.com",
+            password="password123",
+            role=User.Role.DATA_ENUMERATOR,
+            is_active=True,
+        )
+        self.coordinator = User.objects.create_user(
+            username="coordinator_test@example.com",
+            email="coordinator_test@example.com",
+            password="password123",
+            role=User.Role.FIELD_COORDINATOR,
+            is_active=True,
+        )
+
+        # Create a sample UsefulLink
+        self.useful_link = UsefulLink.objects.create(
+            title="Vanuatu CIM Link",
+            description="Testing description",
+            url="https://example.com/cim",
+        )
+
+        self.list_url = reverse("useful-link-list-create")
+        self.detail_url = reverse("useful-link-detail", kwargs={"pk": self.useful_link.pk})
+
+    def test_viewer_permissions(self):
+        self.client.force_authenticate(user=self.viewer)
+        
+        # Viewer can view list
+        response = self.client.get(self.list_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Viewer can view detail
+        response = self.client.get(self.detail_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Viewer CANNOT create
+        response = self.client.post(self.list_url, {"title": "New Link", "url": "https://example.com"})
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+        # Viewer CANNOT update
+        response = self.client.patch(self.detail_url, {"title": "Updated Title"})
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+        # Viewer CANNOT delete
+        response = self.client.delete(self.detail_url)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_enumerator_permissions(self):
+        self.client.force_authenticate(user=self.enumerator)
+        
+        # Enumerator can view list
+        response = self.client.get(self.list_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Enumerator can view detail
+        response = self.client.get(self.detail_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Enumerator CAN create (upload)
+        response = self.client.post(self.list_url, {"title": "New Link", "url": "https://example.com"})
+        assert response.status_code == status.HTTP_201_CREATED
+
+        # Enumerator CANNOT update
+        response = self.client.patch(self.detail_url, {"title": "Updated Title"})
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+        # Enumerator CANNOT delete
+        response = self.client.delete(self.detail_url)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_coordinator_permissions(self):
+        self.client.force_authenticate(user=self.coordinator)
+        
+        # Coordinator can view list
+        response = self.client.get(self.list_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Coordinator can view detail
+        response = self.client.get(self.detail_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Coordinator CAN create (upload)
+        response = self.client.post(self.list_url, {"title": "New Link 2", "url": "https://example.com"})
+        assert response.status_code == status.HTTP_201_CREATED
+
+        # Coordinator CANNOT update
+        response = self.client.patch(self.detail_url, {"title": "Updated Title 2"})
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+        # Coordinator CANNOT delete
+        response = self.client.delete(self.detail_url)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_superadmin_permissions(self):
+        self.client.force_authenticate(user=self.superadmin)
+        
+        # Superadmin can view list
+        response = self.client.get(self.list_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Superadmin can view detail
+        response = self.client.get(self.detail_url)
+        assert response.status_code == status.HTTP_200_OK
+
+        # Superadmin CAN create
+        response = self.client.post(self.list_url, {"title": "Super Link", "url": "https://example.com"})
+        assert response.status_code == status.HTTP_201_CREATED
+
+        # Superadmin CAN update
+        response = self.client.patch(self.detail_url, {"title": "Super Updated Title"})
+        assert response.status_code == status.HTTP_200_OK
+
+        # Superadmin CAN delete
+        response = self.client.delete(self.detail_url)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+

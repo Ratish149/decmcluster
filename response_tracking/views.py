@@ -2,7 +2,7 @@ from rest_framework import filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from account.permissions import IsSuperAdmin
+from account.permissions import RoleBasedPermission
 
 from .models import ResponseTracking
 from .serializers import ResponseTrackingSerializer
@@ -16,7 +16,7 @@ class ResponseTrackingListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
         queryset = ResponseTracking.objects.all().order_by("-created_at")
@@ -33,4 +33,4 @@ class ResponseTrackingDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]

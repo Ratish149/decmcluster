@@ -2,7 +2,7 @@ from rest_framework import filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from account.permissions import IsSuperAdmin
+from account.permissions import RoleBasedPermission
 
 from .models import Report
 from .serializers import ReportSerializer
@@ -16,7 +16,7 @@ class ReportListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
         queryset = Report.objects.all().order_by("-created_at")
@@ -33,4 +33,4 @@ class ReportDetailAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated(), IsSuperAdmin()]
+        return [IsAuthenticated(), RoleBasedPermission()]
