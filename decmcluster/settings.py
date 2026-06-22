@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "contact_list",
     "sop",
     "training",
+    "map",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

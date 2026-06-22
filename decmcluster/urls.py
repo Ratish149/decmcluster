@@ -32,6 +32,7 @@ urlpatterns = (
         path("api/", include("contact_list.urls")),
         path("api/", include("sop.urls")),
         path("api/", include("training.urls")),
+        path("api/", include("map.urls")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
