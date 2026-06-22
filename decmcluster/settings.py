@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     "sop",
     "training",
     "map",
+    "meeting_minute",
 ]
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",

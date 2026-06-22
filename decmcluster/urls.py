@@ -33,6 +33,7 @@ urlpatterns = (
         path("api/", include("sop.urls")),
         path("api/", include("training.urls")),
         path("api/", include("map.urls")),
+        path("api/", include("meeting_minute.urls")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
