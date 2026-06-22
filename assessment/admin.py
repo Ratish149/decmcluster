@@ -3,7 +3,6 @@ from unfold.admin import ModelAdmin
 
 from .models import (
     Assessment,
-    AssessmentAnalytics,
     AssessmentRegistry,
     AssessmentResult,
     AssessmentStats,
@@ -40,13 +39,6 @@ class AssessmentRegistryAdmin(ModelAdmin):
 
 @admin.register(AssessmentStats)
 class AssessmentStatsAdmin(ModelAdmin):
-    list_display = ["name", "count", "created_at", "updated_at"]
-    search_fields = ["name"]
-    list_filter = ["created_at", "updated_at"]
-
-
-@admin.register(AssessmentAnalytics)
-class AssessmentAnalyticsAdmin(ModelAdmin):
     list_display = ["name", "count", "created_at", "updated_at"]
     search_fields = ["name"]
     list_filter = ["created_at", "updated_at"]
