@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -5,6 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from account.permissions import RoleBasedPermission
 from decmcluster.pagination import CustomPagination
 
+from .filters import MapFilter
 from .models import Map, MapCategory
 from .serializers import MapCategorySerializer, MapSerializer
 
@@ -34,9 +36,11 @@ class MapCategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class MapListCreateAPIView(ListCreateAPIView):
+    queryset = Map.objects.select_related("category").all().order_by("-created_at")
     serializer_class = MapSerializer
     pagination_class = CustomPagination
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = MapFilter
     search_fields = ["name"]
 
     def get_permissions(self):
@@ -44,12 +48,6 @@ class MapListCreateAPIView(ListCreateAPIView):
             return [AllowAny()]
         return [IsAuthenticated(), RoleBasedPermission()]
 
-    def get_queryset(self):
-        queryset = Map.objects.select_related("category").all().order_by("-created_at")
-        category_slug = self.request.query_params.get("category")
-        if category_slug:
-            queryset = queryset.filter(category__slug=category_slug)
-        return queryset
 
 
 class MapDetailAPIView(RetrieveUpdateDestroyAPIView):

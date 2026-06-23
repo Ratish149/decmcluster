@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 class MapCategory(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Map(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(MapCategory, on_delete=models.CASCADE)
     image = models.FileField(upload_to="map")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
