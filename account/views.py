@@ -1,4 +1,3 @@
-import django_filters
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status
@@ -10,6 +9,7 @@ from rest_framework.views import APIView
 from account.permissions import RoleBasedPermission
 from decmcluster.pagination import CustomPagination
 
+from .filters import UserFilter
 from .serializers import (
     SuperAdminUserSerializer,
     UserLoginSerializer,
@@ -17,14 +17,6 @@ from .serializers import (
 )
 
 User = get_user_model()
-
-
-class UserFilter(django_filters.FilterSet):
-    role = django_filters.CharFilter(field_name="role", lookup_expr="exact")
-
-    class Meta:
-        model = User
-        fields = ["role"]
 
 
 class UserRegistrationAPIView(APIView):

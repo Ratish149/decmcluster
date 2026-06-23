@@ -18,6 +18,7 @@ class User(AbstractUser):
         max_length=50,
         choices=Role.choices,
         default=Role.VIEWER,
+        db_index=True,
     )
 
     def save(self, *args, **kwargs):
