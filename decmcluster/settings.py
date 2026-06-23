@@ -68,11 +68,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://aluminum-membrane-curriculum-person.trycloudflare.com",
+    "https://dual-collins-desire-monitors.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://aluminum-membrane-curriculum-person.trycloudflare.com",
+    "https://dual-collins-desire-monitors.trycloudflare.com",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

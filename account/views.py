@@ -1,11 +1,15 @@
+import django_filters
 from django.contrib.auth import get_user_model
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .permissions import IsSuperAdmin
+from account.permissions import RoleBasedPermission
+from decmcluster.pagination import CustomPagination
+
 from .serializers import (
     SuperAdminUserSerializer,
     UserLoginSerializer,
@@ -13,6 +17,14 @@ from .serializers import (
 )
 
 User = get_user_model()
+
+
+class UserFilter(django_filters.FilterSet):
+    role = django_filters.CharFilter(field_name="role", lookup_expr="exact")
+
+    class Meta:
+        model = User
+        fields = ["role"]
 
 
 class UserRegistrationAPIView(APIView):
@@ -48,7 +60,7 @@ class UserLoginAPIView(APIView):
 
 
 class SuperAdminUserVerifyAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsSuperAdmin]
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
 
     def patch(self, request, pk, *args, **kwargs):
         try:
@@ -81,16 +93,23 @@ class SuperAdminUserVerifyAPIView(APIView):
 
 
 class SuperAdminUserListAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated, IsSuperAdmin]
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
     queryset = User.objects.all().order_by("-id")
+    pagination_class = CustomPagination
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_class = UserFilter
+    search_fields = ["email", "first_name", "last_name"]
 
     def get_serializer_class(self):
         if self.request.method == "POST":
             return UserRegistrationSerializer
         return SuperAdminUserSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(is_active=True)
+
 
 class SuperAdminUserDetailAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsSuperAdmin]
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
     queryset = User.objects.all()
     serializer_class = SuperAdminUserSerializer

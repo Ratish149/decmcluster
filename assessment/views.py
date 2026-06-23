@@ -45,8 +45,7 @@ class AssessmentResultListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
-        assessment = get_object_or_404(Assessment, slug=slug)
-        return AssessmentResult.objects.filter(assessment=assessment).order_by(
+        return AssessmentResult.objects.select_related("assessment").filter(assessment__slug=slug).order_by(
             "-created_at"
         )
 
@@ -67,8 +66,7 @@ class AssessmentResultDetailAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
-        assessment = get_object_or_404(Assessment, slug=slug)
-        return AssessmentResult.objects.filter(assessment=assessment)
+        return AssessmentResult.objects.select_related("assessment").filter(assessment__slug=slug)
 
 
 class AssessmentRegistryListCreateAPIView(ListCreateAPIView):

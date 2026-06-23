@@ -13,7 +13,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "email", "password", "first_name", "last_name", "is_active", "role")
+        fields = (
+            "id",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+            "is_active",
+            "role",
+        )
         extra_kwargs = {
             "email": {"required": True, "allow_blank": False},
             "first_name": {"required": False, "allow_blank": True},
@@ -25,15 +33,21 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate_role(self, value):
         request = self.context.get("request")
         if value == User.Role.SUPERADMIN:
-            if not request or not request.user or not (
-                request.user.is_authenticated
-                and (
-                    request.user.role == User.Role.SUPERADMIN
-                    or request.user.is_staff
-                    or request.user.is_superuser
+            if (
+                not request
+                or not request.user
+                or not (
+                    request.user.is_authenticated
+                    and (
+                        request.user.role == User.Role.SUPERADMIN
+                        or request.user.is_staff
+                        or request.user.is_superuser
+                    )
                 )
             ):
-                raise serializers.ValidationError("Only superadmins can create superadmin accounts.")
+                raise serializers.ValidationError(
+                    "Only superadmins can create superadmin accounts."
+                )
         return value
 
     def validate_email(self, value):

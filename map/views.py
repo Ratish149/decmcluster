@@ -45,7 +45,7 @@ class MapListCreateAPIView(ListCreateAPIView):
         return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
-        queryset = Map.objects.all().order_by("-created_at")
+        queryset = Map.objects.select_related("category").all().order_by("-created_at")
         category_slug = self.request.query_params.get("category")
         if category_slug:
             queryset = queryset.filter(category__slug=category_slug)
@@ -53,7 +53,7 @@ class MapListCreateAPIView(ListCreateAPIView):
 
 
 class MapDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Map.objects.all()
+    queryset = Map.objects.select_related("category").all()
     serializer_class = MapSerializer
 
     def get_permissions(self):
