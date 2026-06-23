@@ -6,11 +6,11 @@ from django.utils.text import slugify
 
 class Assessment(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(null=True, blank=True, max_length=255)
+    slug = models.SlugField(null=True, blank=True, max_length=255, db_index=True)
     description = models.TextField(null=True, blank=True)
     pdf = models.FileField(upload_to="assessment/pdf/", null=True, blank=True)
     excel = models.FileField(upload_to="assessment/excel/", null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class AssessmentResult(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     file = models.FileField(upload_to="assessment_result/", null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class AssessmentRegistry(models.Model):
     frequency = models.CharField(max_length=255, null=True, blank=True)
     name_of_survey_tool = models.TextField(null=True, blank=True)
     last_survey_conducted = models.DateField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -51,7 +51,7 @@ class AssessmentRegistry(models.Model):
 class AssessmentStats(models.Model):
     name = models.CharField(max_length=255)
     count = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
