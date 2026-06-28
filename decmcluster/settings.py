@@ -71,10 +71,14 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://api.decmcluster.org",
+    "https:/www.api.decmcluster.org",
     "https://perspectives-forests-logo-sitemap.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "https://api.decmcluster.org",
+    "https:/www.api.decmcluster.org",
     "https://perspectives-forests-logo-sitemap.trycloudflare.com",
 ]
 MIDDLEWARE = [
@@ -121,7 +125,7 @@ WSGI_APPLICATION = "decmcluster.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("DB_NAME"),
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
