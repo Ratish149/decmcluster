@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "training",
     "map",
     "meeting_minute",
+    "storages",
 ]
 
 REST_FRAMEWORK = {
@@ -186,4 +187,23 @@ AUTH_USER_MODEL = "account.User"
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+}
+
+AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
+
+AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
+
+AZURE_CONTAINER = "media"
+
+AZURE_CUSTOM_DOMAIN = f"{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            "account_name": AZURE_ACCOUNT_NAME,
+            "account_key": AZURE_ACCOUNT_KEY,
+            "azure_container": AZURE_CONTAINER,
+        },
+    }
 }
