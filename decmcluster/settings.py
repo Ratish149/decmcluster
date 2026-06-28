@@ -68,11 +68,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://dual-collins-desire-monitors.trycloudflare.com",
+    "https://perspectives-forests-logo-sitemap.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://dual-collins-desire-monitors.trycloudflare.com",
+    "https://perspectives-forests-logo-sitemap.trycloudflare.com",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -109,10 +109,21 @@ WSGI_APPLICATION = "decmcluster.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+    }
+} """
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "",
     }
 }
 
