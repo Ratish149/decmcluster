@@ -22,7 +22,9 @@ class ReportListCreateAPIView(ListCreateAPIView):
         return [IsAuthenticated(), RoleBasedPermission()]
 
     def get_queryset(self):
-        queryset = Report.objects.all().order_by("-created_at")
+        queryset = Report.objects.filter(is_situation_report=False).order_by(
+            "-created_at"
+        )
         name = self.request.query_params.get("name")
         if name:
             queryset = queryset.filter(name__icontains=name)
