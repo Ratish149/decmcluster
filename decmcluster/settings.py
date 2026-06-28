@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "map",
     "meeting_minute",
     "storages",
+    "decmcluster.apps.DecmClusterConfig",
 ]
 
 REST_FRAMEWORK = {
@@ -73,13 +74,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://api.decmcluster.org",
-    "https:/www.api.decmcluster.org",
+    "https://www.api.decmcluster.org",
     "https://perspectives-forests-logo-sitemap.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://api.decmcluster.org",
-    "https:/www.api.decmcluster.org",
+    "https://www.api.decmcluster.org",
     "https://perspectives-forests-logo-sitemap.trycloudflare.com",
 ]
 MIDDLEWARE = [
