@@ -203,7 +203,10 @@ STORAGES = {
         "OPTIONS": {
             "account_name": AZURE_ACCOUNT_NAME,
             "account_key": AZURE_ACCOUNT_KEY,
-            "azure_container": AZURE_CONTAINER,
+            "azure_container": "media",
         },
-    }
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
