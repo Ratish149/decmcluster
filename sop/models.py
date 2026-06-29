@@ -5,7 +5,7 @@ from django.db import models
 class SOP(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    file = models.FileField(upload_to="sop")
+    file = models.FileField(upload_to="sop", null=True, blank=True)
     is_admin_only = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
