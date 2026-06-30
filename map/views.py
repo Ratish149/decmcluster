@@ -49,7 +49,6 @@ class MapListCreateAPIView(ListCreateAPIView):
         return [IsAuthenticated(), RoleBasedPermission()]
 
 
-
 class MapDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Map.objects.select_related("category").all()
     serializer_class = MapSerializer

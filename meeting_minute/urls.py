@@ -1,6 +1,10 @@
 from django.urls import path
 
-from .views import MeetingMinuteDetailAPIView, MeetingMinuteListCreateAPIView
+from .views import (
+    MeetingMinuteDetailAPIView,
+    MeetingMinuteListCreateAPIView,
+    MeetingMinuteReverifyAPIView,
+)
 
 urlpatterns = [
     path(
@@ -12,5 +16,10 @@ urlpatterns = [
         "meeting-minute/<int:pk>/",
         MeetingMinuteDetailAPIView.as_view(),
         name="meeting-minute-detail",
+    ),
+    path(
+        "meeting-minute/<int:pk>/reverify/",
+        MeetingMinuteReverifyAPIView.as_view(),
+        name="meeting-minute-reverify",
     ),
 ]

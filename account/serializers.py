@@ -20,6 +20,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "is_active",
+            "access_control",
             "role",
         )
         extra_kwargs = {
@@ -27,6 +28,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "first_name": {"required": False, "allow_blank": True},
             "last_name": {"required": False, "allow_blank": True},
             "is_active": {"required": False, "default": False},
+            "access_control": {"required": False},
             "role": {"required": False},
         }
 
@@ -68,6 +70,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             first_name=validated_data.get("first_name", ""),
             last_name=validated_data.get("last_name", ""),
             is_active=is_active,
+            access_control=validated_data.get("access_control", []),
             role=validated_data.get("role", User.Role.VIEWER),
         )
         return user
@@ -115,6 +118,7 @@ class UserLoginSerializer(serializers.Serializer):
         access_token["role"] = user.role
         access_token["is_staff"] = user.is_staff
         access_token["is_superuser"] = user.is_superuser
+        access_token["access_control"] = user.access_control
 
         return {
             "refresh": str(refresh),
@@ -134,6 +138,7 @@ class SuperAdminUserSerializer(serializers.ModelSerializer):
             "is_active",
             "is_superuser",
             "is_staff",
+            "access_control",
             "role",
             "date_joined",
         )

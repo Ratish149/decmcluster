@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisions Required</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .wrapper {
+      background-color: #f3f4f6;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .header {
+      background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .description {
+      font-size: 16px;
+      color: #4b5563;
+      line-height: 24px;
+      margin-bottom: 24px;
+    }
+    .comment-card {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .comment-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #991b1b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .comment-text {
+      font-size: 15px;
+      color: #7f1d1d;
+      line-height: 22px;
+      margin: 0;
+    }
+    .btn-container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #dc2626;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);
+    }
+    .footer {
+      background-color: #f9fafb;
+      padding: 20px 30px;
+      text-align: center;
+      border-top: 1px solid #e5e7eb;
+    }
+    .footer p {
+      font-size: 13px;
+      color: #9ca3af;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <h1>DECM Cluster</h1>
+      </div>
+      <div class="content">
+        <h2 class="title">Action Required: Revisions Needed</h2>
+        <p class="description">
+          Your uploaded <strong>{{ model_name }}</strong> ({{ instance_name }}) has been returned. Revisions are required before it can be verified.
+        </p>
+        <div class="comment-card">
+          <div class="comment-title">Verifier's Feedback / Comments</div>
+          <p class="comment-text">{{ comment }}</p>
+        </div>
+        {% if edit_url %}
+        <div class="btn-container">
+          <a href="{{ edit_url }}" class="btn">View Submission</a>
+        </div>
+        {% endif %}
+      </div>
+      <div class="footer">
+        <p>This is an automated notification. Please do not reply directly to this email.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

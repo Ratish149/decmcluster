@@ -17,6 +17,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+ADMIN_URL = "http://192.168.1.80:3000/"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

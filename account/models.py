@@ -20,6 +20,7 @@ class User(AbstractUser):
         default=Role.VIEWER,
         db_index=True,
     )
+    access_control = models.JSONField(default=list, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.role == self.Role.SUPERADMIN:
