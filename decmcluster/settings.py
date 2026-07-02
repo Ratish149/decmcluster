@@ -23,6 +23,10 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 ADMIN_URL = "http://192.168.1.80:3000/"
 
+# KoboToolbox Integration Settings
+KOBO_API_KEY = os.getenv("KOBO_API_KEY", "")
+KOBO_BASE_URL = os.getenv("KOBO_BASE_URL", "https://eu.kobotoolbox.org")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -65,6 +69,7 @@ INSTALLED_APPS = [
     "map",
     "meeting_minute",
     "storages",
+    "kobo",
     "decmcluster.apps.DecmClusterConfig",
 ]
 

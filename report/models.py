@@ -9,6 +9,7 @@ class Report(models.Model):
         RETURNED = "returned", "Returned"
 
     name = models.CharField(max_length=255)
+    image = models.FileField(upload_to="reports/", null=True, blank=True)
     file = models.FileField(upload_to="reports/", null=True, blank=True)
     type = models.CharField(max_length=255, null=True, blank=True)
     url = models.TextField(null=True, blank=True)

@@ -31,6 +31,7 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "image",
             "file",
             "type",
             "url",
@@ -106,6 +107,7 @@ class AdminReportSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "image",
             "file",
             "type",
             "url",
