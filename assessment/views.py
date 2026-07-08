@@ -1,10 +1,13 @@
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from account.permissions import RoleBasedPermission
 from decmcluster.pagination import CustomPagination
 
+from .filters import AssessmentFilter
 from .models import Assessment, AssessmentRegistry, AssessmentResult, AssessmentStats
 from .serializers import (
     AssessmentRegistrySerializer,
@@ -17,6 +20,9 @@ from .serializers import (
 class AssessmentListCreateAPIView(ListCreateAPIView):
     queryset = Assessment.objects.all().order_by("-created_at")
     serializer_class = AssessmentSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = AssessmentFilter
+    search_fields = ["name"]
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -45,8 +51,11 @@ class AssessmentResultListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
-        return AssessmentResult.objects.select_related("assessment").filter(assessment__slug=slug).order_by(
-            "-created_at"
+        return (
+            AssessmentResult.objects
+            .select_related("assessment")
+            .filter(assessment__slug=slug)
+            .order_by("-created_at")
         )
 
     def perform_create(self, serializer):
@@ -66,7 +75,9 @@ class AssessmentResultDetailAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
-        return AssessmentResult.objects.select_related("assessment").filter(assessment__slug=slug)
+        return AssessmentResult.objects.select_related("assessment").filter(
+            assessment__slug=slug
+        )
 
 
 class AssessmentRegistryListCreateAPIView(ListCreateAPIView):

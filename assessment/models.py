@@ -11,6 +11,7 @@ class Assessment(models.Model):
     pdf = models.FileField(upload_to="assessment/pdf/", null=True, blank=True)
     excel = models.FileField(upload_to="assessment/excel/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    is_public = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
