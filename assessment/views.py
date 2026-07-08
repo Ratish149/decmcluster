@@ -43,11 +43,7 @@ class AssessmentDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 class AssessmentResultListCreateAPIView(ListCreateAPIView):
     serializer_class = AssessmentResultSerializer
-
-    def get_permissions(self):
-        if self.request.method == "GET":
-            return [AllowAny()]
-        return [IsAuthenticated(), RoleBasedPermission()]
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
@@ -67,11 +63,7 @@ class AssessmentResultListCreateAPIView(ListCreateAPIView):
 class AssessmentResultDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = AssessmentResultSerializer
     lookup_field = "pk"
-
-    def get_permissions(self):
-        if self.request.method == "GET":
-            return [AllowAny()]
-        return [IsAuthenticated(), RoleBasedPermission()]
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
 
     def get_queryset(self):
         slug = self.kwargs.get("slug")
