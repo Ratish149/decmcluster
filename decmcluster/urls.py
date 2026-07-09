@@ -27,7 +27,7 @@ urlpatterns = (
         path("api/", include("contact.urls")),
         path("api/", include("useful_link.urls")),
         path("api/", include("assessment.urls")),
-        path("api/", include("dashboard.urls")),
+        path("api/dashboard/", include("dashboard.urls")),
         path("api/", include("report.urls")),
         path("api/", include("response_tracking.urls")),
         path("api/", include("contact_list.urls")),
