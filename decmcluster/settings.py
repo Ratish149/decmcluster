@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "meeting_minute",
     "storages",
     "kobo",
+    "dashboard",
     "decmcluster.apps.DecmClusterConfig",
 ]
 

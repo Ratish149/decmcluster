@@ -1,0 +1,79 @@
+from django.urls import path
+
+from .views import (
+    DashboardSummaryDetailAPIView,
+    DashboardSummaryListCreateAPIView,
+    EvacuationCentreListDetailAPIView,
+    EvacuationCentreListListCreateAPIView,
+    EvacuationCentreLocationSummaryDetailAPIView,
+    EvacuationCentreLocationSummaryListCreateAPIView,
+    HistoricalEventsDetailAPIView,
+    HistoricalEventsListCreateAPIView,
+    ProvinceSectorSummaryDetailAPIView,
+    ProvinceSectorSummaryListCreateAPIView,
+    ResponseTrackingSummaryDetailAPIView,
+    ResponseTrackingSummaryListCreateAPIView,
+)
+
+urlpatterns = [
+    path(
+        "dashboard-summary/",
+        DashboardSummaryListCreateAPIView.as_view(),
+        name="dashboard-summary-list-create",
+    ),
+    path(
+        "dashboard-summary/<int:pk>/",
+        DashboardSummaryDetailAPIView.as_view(),
+        name="dashboard-summary-detail",
+    ),
+    path(
+        "evacuation-centre-location-summary/",
+        EvacuationCentreLocationSummaryListCreateAPIView.as_view(),
+        name="evacuation-centre-location-summary-list-create",
+    ),
+    path(
+        "evacuation-centre-location-summary/<int:pk>/",
+        EvacuationCentreLocationSummaryDetailAPIView.as_view(),
+        name="evacuation-centre-location-summary-detail",
+    ),
+    path(
+        "province-sector-summary/",
+        ProvinceSectorSummaryListCreateAPIView.as_view(),
+        name="province-sector-summary-list-create",
+    ),
+    path(
+        "province-sector-summary/<int:pk>/",
+        ProvinceSectorSummaryDetailAPIView.as_view(),
+        name="province-sector-summary-detail",
+    ),
+    path(
+        "historical-events/",
+        HistoricalEventsListCreateAPIView.as_view(),
+        name="historical-events-list-create",
+    ),
+    path(
+        "historical-events/<int:pk>/",
+        HistoricalEventsDetailAPIView.as_view(),
+        name="historical-events-detail",
+    ),
+    path(
+        "evacuation-centre-list/",
+        EvacuationCentreListListCreateAPIView.as_view(),
+        name="evacuation-centre-list-list-create",
+    ),
+    path(
+        "evacuation-centre-list/<int:pk>/",
+        EvacuationCentreListDetailAPIView.as_view(),
+        name="evacuation-centre-list-detail",
+    ),
+    path(
+        "response-tracking-summary/",
+        ResponseTrackingSummaryListCreateAPIView.as_view(),
+        name="response-tracking-summary-list-create",
+    ),
+    path(
+        "response-tracking-summary/<int:pk>/",
+        ResponseTrackingSummaryDetailAPIView.as_view(),
+        name="response-tracking-summary-detail",
+    ),
+]
