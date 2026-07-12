@@ -1,0 +1,35 @@
+from django.contrib import admin
+from unfold.admin import ModelAdmin
+
+from .models import EvacutationCentre
+
+
+@admin.register(EvacutationCentre)
+class EvacutationCentreAdmin(ModelAdmin):
+    list_display = (
+        "compound_name",
+        "organization",
+        "agency",
+        "province",
+        "area_council",
+        "latitude",
+        "longitude",
+        "created_at",
+    )
+    list_filter = (
+        "province",
+        "organization",
+        "is_ec_owner_approved",
+        "is_ec_govt_approved",
+    )
+    search_fields = (
+        "compound_name",
+        "organization",
+        "agency",
+        "province",
+        "area_council",
+        "island",
+        "village",
+    )
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at", "updated_at")
