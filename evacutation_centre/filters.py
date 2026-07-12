@@ -19,6 +19,8 @@ class EvacutationCentreFilter(django_filters.FilterSet):
         field_name="is_ec_owner_approved"
     )
     is_ec_govt_approved = django_filters.BooleanFilter(field_name="is_ec_govt_approved")
+    latitude = django_filters.NumberFilter(method="filter_by_coords")
+    longitude = django_filters.NumberFilter(method="filter_by_coords")
 
     class Meta:
         model = EvacutationCentre
@@ -32,4 +34,23 @@ class EvacutationCentreFilter(django_filters.FilterSet):
             "village",
             "is_ec_owner_approved",
             "is_ec_govt_approved",
+            "latitude",
+            "longitude",
         ]
+
+    def filter_by_coords(self, queryset, name, value):
+        latitude = self.data.get("latitude")
+        longitude = self.data.get("longitude")
+        if latitude and longitude:
+            try:
+                lat_val = float(latitude)
+                lon_val = float(longitude)
+                center = EvacutationCentre.objects.filter(
+                    latitude=lat_val, longitude=lon_val
+                ).first()
+                if center and center.province:
+                    return queryset.filter(province=center.province)
+                return queryset.none()
+            except ValueError:
+                pass
+        return queryset

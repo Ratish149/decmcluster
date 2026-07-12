@@ -21,3 +21,18 @@ class FileImportSerializer(serializers.Serializer):
             )
         return value
 
+
+class EvacutationCentreMinimalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EvacutationCentre
+        fields = [
+            "id",
+            "compound_name",
+            "latitude",
+            "longitude",
+            "is_ec_owner_approved",
+            "is_ec_govt_approved",
+            "province",
+        ]
+        read_only_fields = fields
+
