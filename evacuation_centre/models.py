@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class EvacutationCentre(models.Model):
+class EvacuationCentre(models.Model):
     country = models.CharField(max_length=255)
     organization = models.CharField(max_length=255)
     agency = models.CharField(max_length=255)

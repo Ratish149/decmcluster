@@ -1,11 +1,11 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from .models import EvacutationCentre
+from .models import EvacuationCentre
 
 
-@admin.register(EvacutationCentre)
-class EvacutationCentreAdmin(ModelAdmin):
+@admin.register(EvacuationCentre)
+class EvacuationCentreAdmin(ModelAdmin):
     list_display = (
         "compound_name",
         "organization",

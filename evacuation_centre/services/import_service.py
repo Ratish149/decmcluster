@@ -4,7 +4,7 @@ import logging
 
 import openpyxl
 
-from ..models import EvacutationCentre
+from ..models import EvacuationCentre
 
 logger = logging.getLogger(__name__)
 
@@ -101,7 +101,7 @@ def import_evacuation_centres_from_excel(file_path):
             latitude_val = 0.0
             longitude_val = 0.0
 
-        EvacutationCentre.objects.create(
+        EvacuationCentre.objects.create(
             compound_name=str(compound_name).strip(),
             latitude=latitude_val,
             longitude=longitude_val,
@@ -272,7 +272,7 @@ def import_evacuation_centres_from_csv(file_obj):
             latitude_val = 0.0
             longitude_val = 0.0
 
-        EvacutationCentre.objects.create(
+        EvacuationCentre.objects.create(
             compound_name=str(compound_name).strip(),
             latitude=latitude_val,
             longitude=longitude_val,

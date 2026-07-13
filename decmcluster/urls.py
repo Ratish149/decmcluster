@@ -36,7 +36,7 @@ urlpatterns = (
         path("api/", include("map.urls")),
         path("api/", include("meeting_minute.urls")),
         path("api/", include("kobo.urls")),
-        path("api/", include("evacutation_centre.urls")),
+        path("api/", include("evacuation_centre.urls")),
         path("api/", include("displacement.urls")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

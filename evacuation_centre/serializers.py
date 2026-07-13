@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from .models import EvacutationCentre
+from .models import EvacuationCentre
 
 
-class EvacutationCentreSerializer(serializers.ModelSerializer):
+class EvacuationCentreSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EvacutationCentre
+        model = EvacuationCentre
         fields = "__all__"
         read_only_fields = ["id", "created_at", "updated_at"]
 
@@ -22,9 +22,9 @@ class FileImportSerializer(serializers.Serializer):
         return value
 
 
-class EvacutationCentreMinimalSerializer(serializers.ModelSerializer):
+class EvacuationCentreMinimalSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EvacutationCentre
+        model = EvacuationCentre
         fields = [
             "id",
             "compound_name",

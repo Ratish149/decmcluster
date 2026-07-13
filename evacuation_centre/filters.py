@@ -1,9 +1,9 @@
 import django_filters
 
-from .models import EvacutationCentre
+from .models import EvacuationCentre
 
 
-class EvacutationCentreFilter(django_filters.FilterSet):
+class EvacuationCentreFilter(django_filters.FilterSet):
     country = django_filters.CharFilter(field_name="country", lookup_expr="icontains")
     organization = django_filters.CharFilter(
         field_name="organization", lookup_expr="icontains"
@@ -23,7 +23,7 @@ class EvacutationCentreFilter(django_filters.FilterSet):
     longitude = django_filters.NumberFilter(method="filter_by_coords")
 
     class Meta:
-        model = EvacutationCentre
+        model = EvacuationCentre
         fields = [
             "country",
             "organization",
@@ -45,7 +45,7 @@ class EvacutationCentreFilter(django_filters.FilterSet):
             try:
                 lat_val = float(latitude)
                 lon_val = float(longitude)
-                center = EvacutationCentre.objects.filter(
+                center = EvacuationCentre.objects.filter(
                     latitude=lat_val, longitude=lon_val
                 ).first()
                 if center and center.province:

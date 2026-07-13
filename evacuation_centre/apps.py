@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class EvacutationCentreConfig(AppConfig):
-    name = 'evacutation_centre'
+class EvacuationCentreConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'evacuation_centre'

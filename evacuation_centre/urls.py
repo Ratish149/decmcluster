@@ -1,37 +1,43 @@
 from django.urls import path
 
 from .views import (
-    EvacutationCentreDetailAPIView,
-    EvacutationCentreImportAPIView,
-    EvacutationCentreListCreateAPIView,
-    EvacutationCentreMinimalListAPIView,
-    EvacutationCentreStatsAPIView,
+    EvacuationCentreDetailAPIView,
+    EvacuationCentreExportAPIView,
+    EvacuationCentreImportAPIView,
+    EvacuationCentreListCreateAPIView,
+    EvacuationCentreMinimalListAPIView,
+    EvacuationCentreStatsAPIView,
 )
 
 urlpatterns = [
     path(
         "evacuation-centres/",
-        EvacutationCentreListCreateAPIView.as_view(),
+        EvacuationCentreListCreateAPIView.as_view(),
         name="evacuation-centre-list-create",
     ),
     path(
         "evacuation-centres/location/",
-        EvacutationCentreMinimalListAPIView.as_view(),
+        EvacuationCentreMinimalListAPIView.as_view(),
         name="evacuation-centre-minimal-list",
     ),
     path(
         "evacuation-centres/import/",
-        EvacutationCentreImportAPIView.as_view(),
+        EvacuationCentreImportAPIView.as_view(),
         name="evacuation-centre-import",
     ),
     path(
+        "evacuation-centres/export/",
+        EvacuationCentreExportAPIView.as_view(),
+        name="evacuation-centre-export",
+    ),
+    path(
         "evacuation-centres/stats/",
-        EvacutationCentreStatsAPIView.as_view(),
+        EvacuationCentreStatsAPIView.as_view(),
         name="evacuation-centre-stats",
     ),
     path(
         "evacuation-centres/<int:pk>/",
-        EvacutationCentreDetailAPIView.as_view(),
+        EvacuationCentreDetailAPIView.as_view(),
         name="evacuation-centre-detail",
     ),
 ]

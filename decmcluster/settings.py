@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     "storages",
     "kobo",
     "dashboard",
-    "evacutation_centre",
+    "evacuation_centre",
     "displacement",
     "decmcluster.apps.DecmClusterConfig",
 ]

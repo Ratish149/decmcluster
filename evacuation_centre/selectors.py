@@ -1,6 +1,6 @@
 from django.db.models import Count, Q, Sum
 
-from .models import EvacutationCentre
+from .models import EvacuationCentre
 
 
 def get_evacuation_centre_stats(queryset=None):
@@ -9,7 +9,7 @@ def get_evacuation_centre_stats(queryset=None):
     Performs calculations in a single aggregate database query on the provided queryset.
     """
     if queryset is None:
-        queryset = EvacutationCentre.objects.all()
+        queryset = EvacuationCentre.objects.all()
 
     stats = queryset.aggregate(
         total_ec=Count("id"),
