@@ -26,7 +26,7 @@ class Command(BaseCommand):
         ),
     ]
 
-    # Prefix-match so we don't need to hardcode the full auto-generated name
+    # Use prefix matching — the 0002 migration has a long auto-generated name
     MIGRATIONS_TO_FAKE_PREFIXES = [
         ("evacuation_centre", "0001_initial"),
         ("evacuation_centre", "0002_rename_evacutation"),
@@ -98,7 +98,6 @@ class Command(BaseCommand):
                     # SQLite / MySQL: drop old + create new
                     self.stdout.write(f"Dropping old index: {old_name}")
                     cursor.execute(f"DROP INDEX IF EXISTS {old_name}")
-
                     self.stdout.write(f"Creating new index: {new_name} on {columns}")
                     cursor.execute(
                         f"CREATE INDEX {new_name} ON {self.NEW_TABLE} {columns}"
@@ -109,30 +108,52 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(
                     self.style.WARNING(
-                        f"[SKIP] Old index '{old_name}' not found — may already be renamed."
+                        f"[SKIP] Old index '{old_name}' not found — already renamed or never existed."
                     )
                 )
 
     # ------------------------------------------------------------------
-    # Fake migrations
+    # Fake migrations — uses prefix matching to handle auto-generated names
     # ------------------------------------------------------------------
     def _fake_migrations(self):
         from django.db.migrations.recorder import MigrationRecorder
 
         recorder = MigrationRecorder(connection)
+        # Get all currently applied migrations as a set of (app, name) tuples
         applied = {(r.app, r.name) for r in recorder.migration_qs.all()}
 
-        for app, migration in self.MIGRATIONS_TO_FAKE:
-            if (app, migration) in applied:
+        # Get all migration files available for prefix matching
+        from django.db.migrations.loader import MigrationLoader
+
+        loader = MigrationLoader(connection, ignore_no_migrations=True)
+        disk_migrations = loader.disk_migrations  # dict of (app, name) -> migration
+
+        for app, prefix in self.MIGRATIONS_TO_FAKE_PREFIXES:
+            # Find the full migration name that starts with this prefix
+            full_name = None
+            for m_app, m_name in disk_migrations:
+                if m_app == app and m_name.startswith(prefix):
+                    full_name = m_name
+                    break
+
+            if full_name is None:
                 self.stdout.write(
                     self.style.WARNING(
-                        f"[SKIP] Migration '{app}.{migration}' already recorded."
+                        f"[SKIP] No migration found matching '{app}.{prefix}*' on disk."
+                    )
+                )
+                continue
+
+            if (app, full_name) in applied:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"[SKIP] Migration '{app}.{full_name}' already recorded."
                     )
                 )
             else:
-                recorder.record_applied(app, migration)
+                recorder.record_applied(app, full_name)
                 self.stdout.write(
-                    self.style.SUCCESS(f"[OK] Faked migration: {app}.{migration}")
+                    self.style.SUCCESS(f"[OK] Faked migration: {app}.{full_name}")
                 )
 
     # ------------------------------------------------------------------
