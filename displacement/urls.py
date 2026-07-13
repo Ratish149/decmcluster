@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     DisplacementDetailAPIView,
+    DisplacementExportAPIView,
     DisplacementImportAPIView,
     DisplacementListCreateAPIView,
     DisplacementStatsAPIView,
@@ -22,6 +23,11 @@ urlpatterns = [
         "displacements/import/",
         DisplacementImportAPIView.as_view(),
         name="displacement-import",
+    ),
+    path(
+        "displacements/export/",
+        DisplacementExportAPIView.as_view(),
+        name="displacement-export",
     ),
     path(
         "displacements/<int:pk>/",

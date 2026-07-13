@@ -17,6 +17,7 @@ from .filters import DisplacementFilter
 from .models import Displacement
 from .selectors import get_displacement_stats
 from .serializers import DisplacementSerializer, FileImportSerializer
+from .services.export_service import generate_displacement_csv
 from .services.import_service import (
     import_displacements_from_csv,
     import_displacements_from_excel,
@@ -86,3 +87,22 @@ class DisplacementStatsAPIView(APIView):
             queryset = filterset.qs
         stats_data = get_displacement_stats(queryset)
         return Response(stats_data, status=status.HTTP_200_OK)
+
+
+class DisplacementExportAPIView(APIView):
+    # permission_classes = [IsAuthenticated, RoleBasedPermission]
+
+    def get(self, request, *args, **kwargs):
+        queryset = Displacement.objects.all().order_by("-reporting_date")
+        filterset = DisplacementFilter(request.GET, queryset=queryset)
+        if filterset.is_valid():
+            queryset = filterset.qs
+
+        columns_param = request.GET.get("columns", "")
+        requested_columns = None
+        if columns_param:
+            requested_columns = [
+                col.strip() for col in columns_param.split(",") if col.strip()
+            ]
+
+        return generate_displacement_csv(queryset, requested_columns)
