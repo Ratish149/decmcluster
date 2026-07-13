@@ -15,7 +15,7 @@ from decmcluster.pagination import CustomPagination
 
 from .filters import DisplacementFilter
 from .models import Displacement
-from .selectors import get_displacement_stats
+from .selectors import get_displacement_stats, get_displacement_unique_filters
 from .serializers import DisplacementSerializer, FileImportSerializer
 from .services.export_service import generate_displacement_csv
 from .services.import_service import (
@@ -106,3 +106,11 @@ class DisplacementExportAPIView(APIView):
             ]
 
         return generate_displacement_csv(queryset, requested_columns)
+
+
+class DisplacementUniqueFiltersAPIView(APIView):
+    # permission_classes = [IsAuthenticated, RoleBasedPermission]
+
+    def get(self, request, *args, **kwargs):
+        data = get_displacement_unique_filters()
+        return Response(data, status=status.HTTP_200_OK)

@@ -6,6 +6,7 @@ from .views import (
     DisplacementImportAPIView,
     DisplacementListCreateAPIView,
     DisplacementStatsAPIView,
+    DisplacementUniqueFiltersAPIView,
 )
 
 urlpatterns = [
@@ -28,6 +29,11 @@ urlpatterns = [
         "displacements/export/",
         DisplacementExportAPIView.as_view(),
         name="displacement-export",
+    ),
+    path(
+        "displacements/unique-filters/",
+        DisplacementUniqueFiltersAPIView.as_view(),
+        name="displacement-unique-filters",
     ),
     path(
         "displacements/<int:pk>/",

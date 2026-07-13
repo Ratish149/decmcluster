@@ -87,3 +87,47 @@ def get_displacement_stats(queryset=None):
         "idps_by_year": idps_by_year,
         "idps_by_admin1": idps_by_admin1,
     }
+
+
+def get_displacement_unique_filters():
+    """
+    Returns unique values for admin1_name, operation, and reporting_year.
+    """
+    admin1_names = (
+        Displacement.objects
+        .exclude(admin1_name__isnull=True)
+        .exclude(admin1_name="")
+        .values_list("admin1_name", flat=True)
+        .distinct()
+        .order_by("admin1_name")
+    )
+    operations = (
+        Displacement.objects
+        .exclude(operation__isnull=True)
+        .exclude(operation="")
+        .values_list("operation", flat=True)
+        .distinct()
+        .order_by("operation")
+    )
+    reporting_years = (
+        Displacement.objects
+        .exclude(reporting_year__isnull=True)
+        .values_list("reporting_year", flat=True)
+        .distinct()
+        .order_by("reporting_year")
+    )
+
+    # Strip whitespace from names/operations to ensure uniqueness
+    unique_admin1 = sorted(
+        list(set(name.strip() for name in admin1_names if name and name.strip()))
+    )
+    unique_operations = sorted(
+        list(set(op.strip() for op in operations if op and op.strip()))
+    )
+    unique_years = sorted(list(reporting_years))
+
+    return {
+        "admin1_names": unique_admin1,
+        "operations": unique_operations,
+        "reporting_years": unique_years,
+    }
