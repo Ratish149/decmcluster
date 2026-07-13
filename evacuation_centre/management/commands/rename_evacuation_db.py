@@ -26,9 +26,10 @@ class Command(BaseCommand):
         ),
     ]
 
-    MIGRATIONS_TO_FAKE = [
+    # Prefix-match so we don't need to hardcode the full auto-generated name
+    MIGRATIONS_TO_FAKE_PREFIXES = [
         ("evacuation_centre", "0001_initial"),
-        ("evacuation_centre", "0002"),
+        ("evacuation_centre", "0002_rename_evacutation"),
     ]
 
     def handle(self, *args, **options):
