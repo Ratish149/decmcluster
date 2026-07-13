@@ -25,7 +25,7 @@ from .services.import_service import (
 
 
 class DisplacementListCreateAPIView(ListCreateAPIView):
-    queryset = Displacement.objects.all().order_by("-reporting_date")
+    queryset = Displacement.objects.all().order_by("id")
     serializer_class = DisplacementSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]

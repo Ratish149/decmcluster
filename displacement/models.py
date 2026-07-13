@@ -48,6 +48,8 @@ class Displacement(models.Model):
     idp_destination_admin1_pcode = models.CharField(
         max_length=100, null=True, blank=True
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         indexes = [
