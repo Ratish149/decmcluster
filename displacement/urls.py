@@ -4,6 +4,8 @@ from .views import (
     DisplacementDetailAPIView,
     DisplacementExportAPIView,
     DisplacementImportAPIView,
+    DisplacementImportDetailAPIView,
+    DisplacementImportListAPIView,
     DisplacementListCreateAPIView,
     DisplacementStatsAPIView,
     DisplacementUniqueFiltersAPIView,
@@ -24,6 +26,16 @@ urlpatterns = [
         "displacements/import/",
         DisplacementImportAPIView.as_view(),
         name="displacement-import",
+    ),
+    path(
+        "displacements/import-list/",
+        DisplacementImportListAPIView.as_view(),
+        name="displacement-import-list",
+    ),
+    path(
+        "displacements/import-list/<int:pk>/",
+        DisplacementImportDetailAPIView.as_view(),
+        name="displacement-import-detail",
     ),
     path(
         "displacements/export/",

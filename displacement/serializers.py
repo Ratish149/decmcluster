@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Displacement
+from .models import Displacement, DisplacementImport
 
 
 class DisplacementSerializer(serializers.ModelSerializer):
@@ -11,6 +11,7 @@ class DisplacementSerializer(serializers.ModelSerializer):
 
 
 class FileImportSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False, allow_blank=True)
     file = serializers.FileField()
 
     def validate_file(self, value):
@@ -20,3 +21,11 @@ class FileImportSerializer(serializers.Serializer):
                 "Only Excel (.xlsx, .xls) or CSV (.csv) files are allowed."
             )
         return value
+
+
+class DisplacementImportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DisplacementImport
+        fields = "__all__"
+        read_only_fields = ["id", "created_at", "updated_at", "verified_by"]
+

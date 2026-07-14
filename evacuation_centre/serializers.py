@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import EvacuationCentre
+from .models import EvacuationCentre, EvacuationCentreImport
 
 
 class EvacuationCentreSerializer(serializers.ModelSerializer):
@@ -11,6 +11,7 @@ class EvacuationCentreSerializer(serializers.ModelSerializer):
 
 
 class FileImportSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False, allow_blank=True)
     file = serializers.FileField()
 
     def validate_file(self, value):
@@ -36,3 +37,9 @@ class EvacuationCentreMinimalSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
 
+
+class EvacuationCentreImportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EvacuationCentreImport
+        fields = "__all__"
+        read_only_fields = ["id", "created_at", "updated_at", "verified_by"]

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -64,3 +65,48 @@ class Displacement(models.Model):
 
     def __str__(self):
         return f"{self.operation} - {self.reporting_date} - {self.reporting_year}"
+
+
+class DisplacementImport(models.Model):
+    class StatusChoices(models.TextChoices):
+        UNVERIFIED = "unverified", "Unverified"
+        VERIFIED = "verified", "Verified"
+        RETURNED = "returned", "Returned"
+
+    name = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    file = models.FileField(upload_to="displacement_imports/")
+    status = models.CharField(
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.UNVERIFIED,
+        db_index=True,
+    )
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="uploaded_displacement_imports",
+    )
+    verified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="verified_displacement_imports",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["status", "created_at"]),
+        ]
+
+    def __str__(self):
+        return f"Displacement Import Request #{self.id} - {self.file.name}"
+

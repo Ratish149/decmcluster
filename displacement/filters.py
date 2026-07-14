@@ -1,6 +1,6 @@
 import django_filters
 
-from .models import Displacement
+from .models import Displacement, DisplacementImport
 
 
 class DisplacementFilter(django_filters.FilterSet):
@@ -37,3 +37,13 @@ class DisplacementFilter(django_filters.FilterSet):
             "reporting_year",
             "reporting_month",
         ]
+
+
+class DisplacementImportFilter(django_filters.FilterSet):
+    status = django_filters.CharFilter(field_name="status", lookup_expr="iexact")
+    uploaded_by = django_filters.NumberFilter(field_name="uploaded_by_id")
+
+    class Meta:
+        model = DisplacementImport
+        fields = ["status", "uploaded_by"]
+

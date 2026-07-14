@@ -2,6 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status
 from rest_framework.generics import (
     GenericAPIView,
+    ListAPIView,
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
@@ -13,15 +14,15 @@ from rest_framework.views import APIView
 from account.permissions import RoleBasedPermission
 from decmcluster.pagination import CustomPagination
 
-from .filters import DisplacementFilter
-from .models import Displacement
+from .filters import DisplacementFilter, DisplacementImportFilter
+from .models import Displacement, DisplacementImport
 from .selectors import get_displacement_stats, get_displacement_unique_filters
-from .serializers import DisplacementSerializer, FileImportSerializer
-from .services.export_service import generate_displacement_csv
-from .services.import_service import (
-    import_displacements_from_csv,
-    import_displacements_from_excel,
+from .serializers import (
+    DisplacementImportSerializer,
+    DisplacementSerializer,
+    FileImportSerializer,
 )
+from .services.export_service import generate_displacement_csv
 
 
 class DisplacementListCreateAPIView(ListCreateAPIView):
@@ -51,30 +52,22 @@ class DisplacementImportAPIView(GenericAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         uploaded_file = serializer.validated_data["file"]
-        file_name = uploaded_file.name.lower()
+        name = serializer.validated_data.get("name", "")
+        uploaded_by = request.user if request.user.is_authenticated else None
 
-        try:
-            if file_name.endswith(".csv"):
-                created_count, updated_count = import_displacements_from_csv(
-                    uploaded_file
-                )
-            else:
-                created_count, updated_count = import_displacements_from_excel(
-                    uploaded_file
-                )
-            return Response(
-                {
-                    "message": "Import completed successfully.",
-                    "created": created_count,
-                    "updated": updated_count,
-                },
-                status=status.HTTP_200_OK,
-            )
-        except Exception as e:
-            return Response(
-                {"error": f"An error occurred while processing the file: {str(e)}"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        import_request = DisplacementImport.objects.create(
+            file=uploaded_file,
+            uploaded_by=uploaded_by,
+            name=name,
+        )
+
+        return Response(
+            {
+                "message": "File uploaded successfully. It will be processed after admin verification.",
+                "id": import_request.id,
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class DisplacementStatsAPIView(APIView):
@@ -114,3 +107,36 @@ class DisplacementUniqueFiltersAPIView(APIView):
     def get(self, request, *args, **kwargs):
         data = get_displacement_unique_filters()
         return Response(data, status=status.HTTP_200_OK)
+
+
+class DisplacementImportListAPIView(ListAPIView):
+    queryset = (
+        DisplacementImport.objects
+        .select_related("uploaded_by", "verified_by")
+        .all()
+        .order_by("-created_at")
+    )
+    serializer_class = DisplacementImportSerializer
+    pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = DisplacementImportFilter
+    search_fields = ["file"]
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
+
+
+class DisplacementImportDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = (
+        DisplacementImport.objects
+        .select_related("uploaded_by", "verified_by")
+        .all()
+    )
+    serializer_class = DisplacementImportSerializer
+    permission_classes = [IsAuthenticated, RoleBasedPermission]
+
+    def perform_update(self, serializer):
+        status_value = self.request.data.get("status")
+        if status_value == DisplacementImport.StatusChoices.VERIFIED:
+            serializer.save(verified_by=self.request.user)
+        else:
+            serializer.save()
+

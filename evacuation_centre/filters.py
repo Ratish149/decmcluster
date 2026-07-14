@@ -1,6 +1,6 @@
 import django_filters
 
-from .models import EvacuationCentre
+from .models import EvacuationCentre, EvacuationCentreImport
 
 
 class EvacuationCentreFilter(django_filters.FilterSet):
@@ -54,3 +54,13 @@ class EvacuationCentreFilter(django_filters.FilterSet):
             except ValueError:
                 pass
         return queryset
+
+
+class EvacuationCentreImportFilter(django_filters.FilterSet):
+    status = django_filters.CharFilter(field_name="status", lookup_expr="iexact")
+    uploaded_by = django_filters.NumberFilter(field_name="uploaded_by_id")
+
+    class Meta:
+        model = EvacuationCentreImport
+        fields = ["status", "uploaded_by"]
+

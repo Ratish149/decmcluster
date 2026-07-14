@@ -1,7 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from .models import EvacuationCentre
+from .models import EvacuationCentre, EvacuationCentreImport
 
 
 @admin.register(EvacuationCentre)
@@ -33,3 +33,28 @@ class EvacuationCentreAdmin(ModelAdmin):
     )
     ordering = ("-created_at",)
     readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(EvacuationCentreImport)
+class EvacuationCentreImportAdmin(ModelAdmin):
+    list_display = (
+        "id",
+        "file",
+        "status",
+        "uploaded_by",
+        "verified_by",
+        "created_at",
+    )
+    list_filter = (
+        "status",
+        "created_at",
+    )
+    search_fields = (
+        "file",
+        "uploaded_by__email",
+        "uploaded_by__first_name",
+        "uploaded_by__last_name",
+    )
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at", "updated_at")
+

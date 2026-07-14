@@ -38,6 +38,7 @@ def send_html_email(subject, to_email, template_name, context):
 
     try:
         response = resend.Emails.send(params)
+        print("email sent successfully")
         logger.info(
             f"Email sent successfully. Subject: {subject}. Response: {response}"
         )
@@ -65,7 +66,7 @@ def send_model_verification_email(
             settings, "ADMIN_URL", "https://decmcluster.org/verify-content/"
         )
 
-    subject = f"Verification Required: New {model_name} Created - {instance}"
+    subject = f"Verification Required: New {model_name} Created."
     context = {
         "model_name": model_name,
         "instance_name": str(instance),
@@ -73,6 +74,7 @@ def send_model_verification_email(
         "details": details,
         "admin_url": admin_url,
     }
+    print("email sent to", admin_email)
 
     return send_html_email(
         subject=subject,
@@ -98,14 +100,14 @@ def send_status_update_email(instance, model_name, new_status, comment=None):
     instance_name = str(instance)
 
     if new_status == "verified":
-        subject = f"Verified: Your {model_name} has been verified - {instance_name}"
+        subject = f"Verified: Your {model_name} has been verified."
         template_name = "emails/verified.html"
         context = {
             "model_name": model_name,
             "instance_name": instance_name,
         }
     elif new_status == "returned":
-        subject = f"Action Required: Your {model_name} was returned - {instance_name}"
+        subject = f"Action Required: Your {model_name} was returned."
         template_name = "emails/returned.html"
         base_url = getattr(settings, "ADMIN_URL", "http://192.168.1.80:3000/")
         if not base_url.endswith("/"):
