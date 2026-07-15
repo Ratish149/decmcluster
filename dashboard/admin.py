@@ -2,10 +2,12 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin
 
 from .models import (
+    Banner,
     DashboardSummary,
     EvacuationCentreList,
     EvacuationCentreLocationSummary,
     HistoricalEvents,
+    PowerBiIframe,
     ProvinceSectorSummary,
     ResponseTrackingSummary,
 )
@@ -67,3 +69,22 @@ class ResponseTrackingSummaryAdmin(ModelAdmin):
     list_display = ["id", "sector", "partner", "status", "coverage"]
     search_fields = ["sector", "partner", "status"]
     list_filter = ["sector", "status"]
+
+
+@admin.register(Banner)
+class BannerAdmin(ModelAdmin):
+    list_display = ["id", "title", "image", "created_at", "updated_at"]
+    search_fields = ["title", "description"]
+
+
+@admin.register(PowerBiIframe)
+class PowerBiIframeAdmin(ModelAdmin):
+    list_display = ["id", "iframe_link", "created_at", "updated_at"]
+
+    def has_add_permission(self, request):
+        # Allow adding only if no instance exists
+        return not self.model.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        # Disallow deletion of the singleton instance
+        return False

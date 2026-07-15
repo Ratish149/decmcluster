@@ -1,6 +1,8 @@
 from django.urls import path
 
 from .views import (
+    BannerDetailAPIView,
+    BannerListCreateAPIView,
     DashboardSummaryDetailAPIView,
     DashboardSummaryListCreateAPIView,
     EvacuationCentreListDetailAPIView,
@@ -9,6 +11,8 @@ from .views import (
     EvacuationCentreLocationSummaryListCreateAPIView,
     HistoricalEventsDetailAPIView,
     HistoricalEventsListCreateAPIView,
+    PowerBiIframeDetailAPIView,
+    PowerBiIframeListCreateAPIView,
     ProvinceSectorSummaryDetailAPIView,
     ProvinceSectorSummaryListCreateAPIView,
     ResponseTrackingSummaryDetailAPIView,
@@ -75,5 +79,25 @@ urlpatterns = [
         "response-tracking-summary/<int:pk>/",
         ResponseTrackingSummaryDetailAPIView.as_view(),
         name="response-tracking-summary-detail",
+    ),
+    path(
+        "banners/",
+        BannerListCreateAPIView.as_view(),
+        name="banner-list-create",
+    ),
+    path(
+        "banners/<int:pk>/",
+        BannerDetailAPIView.as_view(),
+        name="banner-detail",
+    ),
+    path(
+        "powerbi-iframe/",
+        PowerBiIframeListCreateAPIView.as_view(),
+        name="powerbi-iframe-list-create",
+    ),
+    path(
+        "powerbi-iframe/<int:pk>/",
+        PowerBiIframeDetailAPIView.as_view(),
+        name="powerbi-iframe-detail",
     ),
 ]

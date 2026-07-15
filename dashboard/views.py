@@ -6,18 +6,22 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from account.permissions import RoleBasedPermission
 
 from .models import (
+    Banner,
     DashboardSummary,
     EvacuationCentreList,
     EvacuationCentreLocationSummary,
     HistoricalEvents,
+    PowerBiIframe,
     ProvinceSectorSummary,
     ResponseTrackingSummary,
 )
 from .serializers import (
+    BannerSerializer,
     DashboardSummarySerializer,
     EvacuationCentreListSerializer,
     EvacuationCentreLocationSummarySerializer,
     HistoricalEventsSerializer,
+    PowerBiIframeSerializer,
     ProvinceSectorSummarySerializer,
     ResponseTrackingSummarySerializer,
 )
@@ -151,6 +155,57 @@ class ResponseTrackingSummaryListCreateAPIView(ListCreateAPIView):
 class ResponseTrackingSummaryDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = ResponseTrackingSummary.objects.all()
     serializer_class = ResponseTrackingSummarySerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), RoleBasedPermission()]
+
+
+class BannerListCreateAPIView(ListCreateAPIView):
+    queryset = Banner.objects.all().order_by("-id")
+    serializer_class = BannerSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), RoleBasedPermission()]
+
+
+class BannerDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), RoleBasedPermission()]
+
+
+class PowerBiIframeListCreateAPIView(ListCreateAPIView):
+    serializer_class = PowerBiIframeSerializer
+
+    def get_queryset(self):
+        # Automatically ensure the singleton instance exists and return it
+        PowerBiIframe.load()
+        return PowerBiIframe.objects.all()
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), RoleBasedPermission()]
+
+    def perform_create(self, serializer):
+        # If the singleton already exists, update it instead of creating a new one
+        instance = PowerBiIframe.objects.filter(pk=1).first()
+        if instance:
+            serializer.instance = instance
+        serializer.save()
+
+
+class PowerBiIframeDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = PowerBiIframe.objects.all()
+    serializer_class = PowerBiIframeSerializer
 
     def get_permissions(self):
         if self.request.method == "GET":

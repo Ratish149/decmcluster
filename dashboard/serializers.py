@@ -1,10 +1,12 @@
 from rest_framework import serializers
 
 from .models import (
+    Banner,
     DashboardSummary,
     EvacuationCentreList,
     EvacuationCentreLocationSummary,
     HistoricalEvents,
+    PowerBiIframe,
     ProvinceSectorSummary,
     ResponseTrackingSummary,
 )
@@ -90,3 +92,29 @@ class ResponseTrackingSummarySerializer(serializers.ModelSerializer):
             "coverage",
         ]
         read_only_fields = ["id"]
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = [
+            "id",
+            "title",
+            "description",
+            "image",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+
+class PowerBiIframeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PowerBiIframe
+        fields = [
+            "id",
+            "iframe_link",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at"]
