@@ -96,21 +96,10 @@ class Banner(models.Model):
 
 
 class PowerBiIframe(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
     iframe_link = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "Power Bi Iframe"
-
-    def save(self, *args, **kwargs):
-        self.pk = 1
-        super().save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        pass  # Prevent deletion of the singleton instance
-
-    @classmethod
-    def load(cls):
-        obj, created = cls.objects.get_or_create(pk=1)
-        return obj
+        return self.name

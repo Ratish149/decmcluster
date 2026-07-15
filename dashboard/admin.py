@@ -79,12 +79,5 @@ class BannerAdmin(ModelAdmin):
 
 @admin.register(PowerBiIframe)
 class PowerBiIframeAdmin(ModelAdmin):
-    list_display = ["id", "iframe_link", "created_at", "updated_at"]
-
-    def has_add_permission(self, request):
-        # Allow adding only if no instance exists
-        return not self.model.objects.exists()
-
-    def has_delete_permission(self, request, obj=None):
-        # Disallow deletion of the singleton instance
-        return False
+    list_display = ["id", "name", "iframe_link", "created_at", "updated_at"]
+    search_fields = ["name"]

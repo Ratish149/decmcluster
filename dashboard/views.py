@@ -183,24 +183,13 @@ class BannerDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class PowerBiIframeListCreateAPIView(ListCreateAPIView):
+    queryset = PowerBiIframe.objects.all().order_by("-id")
     serializer_class = PowerBiIframeSerializer
-
-    def get_queryset(self):
-        # Automatically ensure the singleton instance exists and return it
-        PowerBiIframe.load()
-        return PowerBiIframe.objects.all()
 
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated(), RoleBasedPermission()]
-
-    def perform_create(self, serializer):
-        # If the singleton already exists, update it instead of creating a new one
-        instance = PowerBiIframe.objects.filter(pk=1).first()
-        if instance:
-            serializer.instance = instance
-        serializer.save()
 
 
 class PowerBiIframeDetailAPIView(RetrieveUpdateDestroyAPIView):

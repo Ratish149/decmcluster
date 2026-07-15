@@ -113,6 +113,7 @@ class PowerBiIframeSerializer(serializers.ModelSerializer):
         model = PowerBiIframe
         fields = [
             "id",
+            "name",
             "iframe_link",
             "created_at",
             "updated_at",
