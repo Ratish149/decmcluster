@@ -4,6 +4,7 @@ from .views import (
     SuperAdminUserDetailAPIView,
     SuperAdminUserListAPIView,
     SuperAdminUserVerifyAPIView,
+    UserEmailVerificationAPIView,
     UserLoginAPIView,
     UserRegistrationAPIView,
 )
@@ -11,6 +12,7 @@ from .views import (
 urlpatterns = [
     path("register/", UserRegistrationAPIView.as_view(), name="register"),
     path("login/", UserLoginAPIView.as_view(), name="login"),
+    path("verify-email/", UserEmailVerificationAPIView.as_view(), name="verify-email"),
     path(
         "verify/<int:pk>/",
         SuperAdminUserVerifyAPIView.as_view(),

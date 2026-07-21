@@ -28,7 +28,7 @@ class UserRegistrationAPIView(APIView):
             user = serializer.save()
             return Response(
                 {
-                    "message": "User registered successfully.",
+                    "message": "User registered successfully. Please check your email to verify your account.",
                     "user": {
                         "id": user.id,
                         "username": user.username,
@@ -39,6 +39,41 @@ class UserRegistrationAPIView(APIView):
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserEmailVerificationAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        token = request.data.get("token")
+        if not token:
+            return Response(
+                {"detail": "Token is required."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        from account.services.verification_service import verify_token_and_get_user
+
+        user = verify_token_and_get_user(token)
+
+        if not user:
+            return Response(
+                {"detail": "Invalid or expired verification token."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if user.is_active:
+            return Response(
+                {"message": "Email is already verified.", "email": user.email},
+                status=status.HTTP_200_OK,
+            )
+
+        user.is_active = True
+        user.save()
+
+        return Response(
+            {"message": "Email verified successfully.", "email": user.email},
+            status=status.HTTP_200_OK,
+        )
 
 
 class UserLoginAPIView(APIView):
@@ -98,7 +133,7 @@ class SuperAdminUserListAPIView(ListCreateAPIView):
         return SuperAdminUserSerializer
 
     def perform_create(self, serializer):
-        serializer.save(is_active=True)
+        serializer.save()
 
 
 class SuperAdminUserDetailAPIView(RetrieveUpdateDestroyAPIView):

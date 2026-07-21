@@ -89,13 +89,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://api.decmcluster.org",
     "https://www.api.decmcluster.org",
-    "https://key-furnishings-andreas-chest.trycloudflare.com",
+    "https://branches-outcomes-showcase-deposits.trycloudflare.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://api.decmcluster.org",
     "https://www.api.decmcluster.org",
-    "https://key-furnishings-andreas-chest.trycloudflare.com",
+    "https://branches-outcomes-showcase-deposits.trycloudflare.com",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

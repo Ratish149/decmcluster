@@ -10,6 +10,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, style={"input_type": "password"}
     )
+    is_active = serializers.BooleanField(default=False, required=False)
 
     class Meta:
         model = User
@@ -61,7 +62,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         email = validated_data["email"]
-        is_active = validated_data.get("is_active", True)
+        is_active = validated_data.get("is_active", False)
+        print("validated_data:", validated_data)
+        print("email", email)
+        print("is_active", is_active)
         # Create user with username same as email, dynamic is_active state, and role
         user = User.objects.create_user(
             username=email,
@@ -73,6 +77,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             access_control=validated_data.get("access_control", []),
             role=validated_data.get("role", User.Role.VIEWER),
         )
+
+        # Only send verification email if user is created as inactive
+        if not user.is_active:
+            from account.services.user_service import send_verification_email
+
+            send_verification_email(user)
+
         return user
 
 
