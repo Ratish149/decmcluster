@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,92 +14,289 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='FiveWActivity',
+            name="FiveWActivity",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('donor', models.CharField(blank=True, db_index=True, max_length=255, null=True)),
-                ('donor_names', models.CharField(blank=True, max_length=255, null=True)),
-                ('reporting_org_name', models.CharField(blank=True, db_index=True, max_length=255, null=True)),
-                ('ro_code', models.CharField(blank=True, max_length=100, null=True)),
-                ('reporting_org_type', models.CharField(blank=True, max_length=255, null=True)),
-                ('other_ip_name', models.CharField(blank=True, max_length=255, null=True)),
-                ('ip_code', models.CharField(blank=True, max_length=100, null=True)),
-                ('ip_type', models.CharField(blank=True, max_length=255, null=True)),
-                ('reporting_month', models.CharField(blank=True, db_index=True, max_length=50, null=True)),
-                ('activity_status', models.CharField(blank=True, db_index=True, max_length=100, null=True)),
-                ('state_abyei', models.CharField(blank=True, db_index=True, max_length=255, null=True)),
-                ('admin1_code', models.CharField(blank=True, max_length=100, null=True)),
-                ('province', models.CharField(blank=True, max_length=255, null=True)),
-                ('admin2_code', models.CharField(blank=True, max_length=100, null=True)),
-                ('location_evac_name', models.CharField(blank=True, max_length=255, null=True)),
-                ('cluster_name', models.CharField(blank=True, db_index=True, max_length=255, null=True)),
-                ('hrp_non_hrp', models.CharField(blank=True, max_length=50, null=True)),
-                ('project_number', models.CharField(blank=True, max_length=100, null=True)),
-                ('project_name', models.CharField(blank=True, max_length=255, null=True)),
-                ('activity', models.TextField(blank=True, null=True)),
-                ('indicator', models.TextField(blank=True, null=True)),
-                ('unit', models.CharField(blank=True, max_length=100, null=True)),
-                ('target', models.IntegerField(blank=True, default=0, null=True)),
-                ('total_value', models.DecimalField(blank=True, decimal_places=4, max_digits=20, null=True)),
-                ('new_beneficiaries', models.BooleanField(blank=True, null=True)),
-                ('beneficiaries_type_under_18', models.CharField(blank=True, max_length=100, null=True)),
-                ('child_male_under_18', models.IntegerField(blank=True, default=0, null=True)),
-                ('child_female_under_18', models.IntegerField(blank=True, default=0, null=True)),
-                ('adult_male_18_60', models.IntegerField(blank=True, default=0, null=True)),
-                ('adult_female_18_60', models.IntegerField(blank=True, default=0, null=True)),
-                ('elderly_male_60_plus', models.IntegerField(blank=True, default=0, null=True)),
-                ('elderly_female_60_plus', models.IntegerField(blank=True, default=0, null=True)),
-                ('total_beneficiaries_reached', models.IntegerField(blank=True, default=0, null=True)),
-                ('people_with_disability', models.IntegerField(blank=True, default=0, null=True)),
-                ('is_mpc', models.BooleanField(blank=True, null=True)),
-                ('modality', models.CharField(blank=True, max_length=100, null=True)),
-                ('type_of_modality', models.CharField(blank=True, max_length=100, null=True)),
-                ('delivery_mechanism', models.CharField(blank=True, max_length=255, null=True)),
-                ('number_of_transfers', models.IntegerField(blank=True, default=0, null=True)),
-                ('value_ssp', models.DecimalField(blank=True, decimal_places=4, max_digits=20, null=True)),
-                ('value_usd', models.DecimalField(blank=True, decimal_places=4, max_digits=20, null=True)),
-                ('comments', models.TextField(blank=True, null=True)),
-                ('contribute_hrp_aap', models.CharField(blank=True, max_length=100, null=True)),
-                ('hrp_aap_indicators', models.TextField(blank=True, null=True)),
-                ('activity_type', models.CharField(blank=True, max_length=255, null=True)),
-                ('sub_activity_type', models.CharField(blank=True, max_length=255, null=True)),
-                ('measurements', models.CharField(blank=True, max_length=255, null=True)),
-                ('achieved', models.IntegerField(blank=True, default=0, null=True)),
-                ('column1', models.CharField(blank=True, max_length=255, null=True)),
-                ('boys_above_5', models.IntegerField(blank=True, default=0, null=True)),
-                ('girls_above_5', models.IntegerField(blank=True, default=0, null=True)),
-                ('boys_5_17', models.IntegerField(blank=True, default=0, null=True)),
-                ('girls_5_17', models.IntegerField(blank=True, default=0, null=True)),
-                ('men_18_59', models.IntegerField(blank=True, default=0, null=True)),
-                ('women_18_59', models.IntegerField(blank=True, default=0, null=True)),
-                ('men_60_plus', models.IntegerField(blank=True, default=0, null=True)),
-                ('women_60_plus', models.IntegerField(blank=True, default=0, null=True)),
-                ('total_reached_quarter', models.IntegerField(blank=True, default=0, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "donor",
+                    models.CharField(
+                        blank=True, db_index=True, max_length=255, null=True
+                    ),
+                ),
+                (
+                    "donor_names",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "reporting_org_name",
+                    models.CharField(
+                        blank=True, db_index=True, max_length=255, null=True
+                    ),
+                ),
+                ("ro_code", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "reporting_org_type",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "other_ip_name",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("ip_code", models.CharField(blank=True, max_length=100, null=True)),
+                ("ip_type", models.CharField(blank=True, max_length=255, null=True)),
+                (
+                    "reporting_month",
+                    models.CharField(
+                        blank=True, db_index=True, max_length=50, null=True
+                    ),
+                ),
+                (
+                    "activity_status",
+                    models.CharField(
+                        blank=True, db_index=True, max_length=100, null=True
+                    ),
+                ),
+                (
+                    "state_abyei",
+                    models.CharField(
+                        blank=True, db_index=True, max_length=255, null=True
+                    ),
+                ),
+                (
+                    "admin1_code",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("province", models.CharField(blank=True, max_length=255, null=True)),
+                (
+                    "admin2_code",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "location_evac_name",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "cluster_name",
+                    models.CharField(
+                        blank=True, db_index=True, max_length=255, null=True
+                    ),
+                ),
+                ("hrp_non_hrp", models.CharField(blank=True, max_length=50, null=True)),
+                (
+                    "project_number",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "project_name",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("activity", models.TextField(blank=True, null=True)),
+                ("indicator", models.TextField(blank=True, null=True)),
+                ("unit", models.CharField(blank=True, max_length=100, null=True)),
+                ("target", models.IntegerField(blank=True, default=0, null=True)),
+                (
+                    "total_value",
+                    models.DecimalField(
+                        blank=True, decimal_places=4, max_digits=20, null=True
+                    ),
+                ),
+                ("new_beneficiaries", models.BooleanField(blank=True, null=True)),
+                (
+                    "beneficiaries_type_under_18",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "child_male_under_18",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "child_female_under_18",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "adult_male_18_60",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "adult_female_18_60",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "elderly_male_60_plus",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "elderly_female_60_plus",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "total_beneficiaries_reached",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "people_with_disability",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                ("is_mpc", models.BooleanField(blank=True, null=True)),
+                ("modality", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "type_of_modality",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "delivery_mechanism",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "number_of_transfers",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "value_ssp",
+                    models.DecimalField(
+                        blank=True, decimal_places=4, max_digits=20, null=True
+                    ),
+                ),
+                (
+                    "value_usd",
+                    models.DecimalField(
+                        blank=True, decimal_places=4, max_digits=20, null=True
+                    ),
+                ),
+                ("comments", models.TextField(blank=True, null=True)),
+                (
+                    "contribute_hrp_aap",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("hrp_aap_indicators", models.TextField(blank=True, null=True)),
+                (
+                    "activity_type",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "sub_activity_type",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "measurements",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("achieved", models.IntegerField(blank=True, default=0, null=True)),
+                ("column1", models.CharField(blank=True, max_length=255, null=True)),
+                ("boys_above_5", models.IntegerField(blank=True, default=0, null=True)),
+                (
+                    "girls_above_5",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                ("boys_5_17", models.IntegerField(blank=True, default=0, null=True)),
+                ("girls_5_17", models.IntegerField(blank=True, default=0, null=True)),
+                ("men_18_59", models.IntegerField(blank=True, default=0, null=True)),
+                ("women_18_59", models.IntegerField(blank=True, default=0, null=True)),
+                ("men_60_plus", models.IntegerField(blank=True, default=0, null=True)),
+                (
+                    "women_60_plus",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                (
+                    "total_reached_quarter",
+                    models.IntegerField(blank=True, default=0, null=True),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': '5W Activity',
-                'verbose_name_plural': '5W Activities',
-                'indexes': [models.Index(fields=['donor'], name='fivew_fivew_donor_b386ab_idx'), models.Index(fields=['reporting_org_name'], name='fivew_fivew_reporti_f0fdb2_idx'), models.Index(fields=['reporting_month'], name='fivew_fivew_reporti_26d9d9_idx'), models.Index(fields=['activity_status'], name='fivew_fivew_activit_3df5e4_idx'), models.Index(fields=['state_abyei'], name='fivew_fivew_state_a_7ed367_idx'), models.Index(fields=['cluster_name'], name='fivew_fivew_cluster_4d77d0_idx')],
+                "verbose_name": "5W Activity",
+                "verbose_name_plural": "5W Activities",
+                "indexes": [
+                    models.Index(fields=["donor"], name="fivew_fivew_donor_b386ab_idx"),
+                    models.Index(
+                        fields=["reporting_org_name"],
+                        name="fivew_fivew_reporti_f0fdb2_idx",
+                    ),
+                    models.Index(
+                        fields=["reporting_month"],
+                        name="fivew_fivew_reporti_26d9d9_idx",
+                    ),
+                    models.Index(
+                        fields=["activity_status"],
+                        name="fivew_fivew_activit_3df5e4_idx",
+                    ),
+                    models.Index(
+                        fields=["state_abyei"], name="fivew_fivew_state_a_7ed367_idx"
+                    ),
+                    models.Index(
+                        fields=["cluster_name"], name="fivew_fivew_cluster_4d77d0_idx"
+                    ),
+                ],
             },
         ),
         migrations.CreateModel(
-            name='FiveWImport',
+            name="FiveWImport",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=255, null=True)),
-                ('file', models.FileField(upload_to='fivew_imports/')),
-                ('status', models.CharField(choices=[('unverified', 'Unverified'), ('verified', 'Verified'), ('returned', 'Returned')], db_index=True, default='unverified', max_length=20)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('uploaded_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='uploaded_fivew_imports', to=settings.AUTH_USER_MODEL)),
-                ('verified_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='verified_fivew_imports', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(blank=True, max_length=255, null=True)),
+                ("file", models.FileField(upload_to="fivew_imports/")),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("unverified", "Unverified"),
+                            ("verified", "Verified"),
+                            ("returned", "Returned"),
+                        ],
+                        db_index=True,
+                        default="unverified",
+                        max_length=20,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "uploaded_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="uploaded_fivew_imports",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "verified_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="verified_fivew_imports",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': '5W Import',
-                'verbose_name_plural': '5W Imports',
-                'indexes': [models.Index(fields=['status', 'created_at'], name='fivew_fivew_status_be329e_idx')],
+                "verbose_name": "5W Import",
+                "verbose_name_plural": "5W Imports",
+                "indexes": [
+                    models.Index(
+                        fields=["status", "created_at"],
+                        name="fivew_fivew_status_be329e_idx",
+                    )
+                ],
             },
         ),
     ]

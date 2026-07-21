@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    FiveWActivityExportAPIView,
     FiveWActivityListCreateAPIView,
     FiveWActivityRetrieveUpdateDestroyAPIView,
     FiveWImportListCreateAPIView,
@@ -12,6 +13,11 @@ urlpatterns = [
         "fivew/activities/",
         FiveWActivityListCreateAPIView.as_view(),
         name="fivew-activity-list-create",
+    ),
+    path(
+        "fivew/activities/export/",
+        FiveWActivityExportAPIView.as_view(),
+        name="fivew-activity-export",
     ),
     path(
         "fivew/activities/<int:pk>/",

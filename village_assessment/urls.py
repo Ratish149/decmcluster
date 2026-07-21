@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    VillageAssessmentExportAPIView,
     VillageAssessmentImportListCreateAPIView,
     VillageAssessmentImportRetrieveUpdateDestroyAPIView,
     VillageAssessmentListCreateAPIView,
@@ -12,6 +13,11 @@ urlpatterns = [
         "village-assessments/",
         VillageAssessmentListCreateAPIView.as_view(),
         name="village-assessment-list-create",
+    ),
+    path(
+        "village-assessments/export/",
+        VillageAssessmentExportAPIView.as_view(),
+        name="village-assessment-export",
     ),
     path(
         "village-assessments/<int:pk>/",

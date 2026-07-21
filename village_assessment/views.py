@@ -2,10 +2,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters as rest_filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.views import APIView
+
+from decmcluster.pagination import CustomPagination
 
 from .filters import VillageAssessmentFilter
 from .models import VillageAssessment, VillageAssessmentImport
 from .serializers import VillageAssessmentImportSerializer, VillageAssessmentSerializer
+from .services.export_service import generate_village_assessment_csv
 
 
 class VillageAssessmentListCreateAPIView(ListCreateAPIView):
@@ -20,6 +24,8 @@ class VillageAssessmentListCreateAPIView(ListCreateAPIView):
         rest_filters.OrderingFilter,
     ]
     filterset_class = VillageAssessmentFilter
+    pagination_class = CustomPagination
+
     search_fields = [
         "province",
         "area_council",
@@ -45,6 +51,7 @@ class VillageAssessmentImportListCreateAPIView(ListCreateAPIView):
     )
     serializer_class = VillageAssessmentImportSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = CustomPagination
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
@@ -59,3 +66,22 @@ class VillageAssessmentImportRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyA
     )
     serializer_class = VillageAssessmentImportSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class VillageAssessmentExportAPIView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, *args, **kwargs):
+        queryset = VillageAssessment.objects.all().order_by("created_at")
+        filterset = VillageAssessmentFilter(request.GET, queryset=queryset)
+        if filterset.is_valid():
+            queryset = filterset.qs
+
+        columns_param = request.GET.get("columns", "")
+        requested_columns = None
+        if columns_param:
+            requested_columns = [
+                col.strip() for col in columns_param.split(",") if col.strip()
+            ]
+
+        return generate_village_assessment_csv(queryset, requested_columns)
