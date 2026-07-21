@@ -73,6 +73,8 @@ INSTALLED_APPS = [
     "dashboard",
     "evacuation_centre",
     "displacement",
+    "fivew",
+    "village_assessment",
     "decmcluster.apps.DecmClusterConfig",
 ]
 
