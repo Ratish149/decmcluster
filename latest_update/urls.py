@@ -9,12 +9,12 @@ from .views import (
 
 urlpatterns = [
     path(
-        "categories/",
+        "latest-update-categories/",
         CategoryListCreateAPIView.as_view(),
         name="category-list-create",
     ),
     path(
-        "categories/<int:pk>/",
+        "latest-update-categories/<int:pk>/",
         CategoryDetailAPIView.as_view(),
         name="category-detail",
     ),
