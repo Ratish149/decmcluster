@@ -54,14 +54,7 @@ class LatestUpdateListCreateAPIView(ListCreateAPIView):
     ]
     filterset_class = LatestUpdateFilter
     search_fields = [
-        "title",
-        "short_description",
-        "description",
-        "thumbnail_alt_desc",
-        "meta_title",
-        "meta_description",
-        "category__name",
-    ]
+        "title", ]
     ordering_fields = ["created_at", "updated_at", "title", "is_featured"]
     ordering = ["-created_at"]
 
