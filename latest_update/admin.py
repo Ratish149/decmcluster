@@ -1,10 +1,11 @@
 from django.contrib import admin
 
 from .models import LatestUpdate
+from unfold.admin import ModelAdmin
 
 
 @admin.register(LatestUpdate)
-class LatestUpdateAdmin(admin.ModelAdmin):
+class LatestUpdateAdmin(ModelAdmin):
     list_display = (
         "id",
         "title",
