@@ -40,6 +40,7 @@ urlpatterns = (
         path("api/", include("displacement.urls")),
         path("api/", include("fivew.urls")),
         path("api/", include("village_assessment.urls")),
+        path("api/", include("latest_update.urls")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

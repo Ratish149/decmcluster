@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "displacement",
     "fivew",
     "village_assessment",
+    "latest_update",
     "decmcluster.apps.DecmClusterConfig",
 ]
 
