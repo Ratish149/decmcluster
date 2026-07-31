@@ -2,7 +2,34 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.name:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
 class LatestUpdate(models.Model):
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="latest_updates",
+        db_index=True,
+    )
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, null=True, blank=True)
     short_description = models.CharField(max_length=500, null=True, blank=True)
@@ -11,6 +38,7 @@ class LatestUpdate(models.Model):
     thumbnail_alt_desc = models.CharField(
         max_length=100, null=True, blank=True, verbose_name="Thumbnail Alt Description"
     )
+    
     meta_title = models.CharField(max_length=255, null=True, blank=True)
     meta_description = models.CharField(max_length=255, null=True, blank=True)
     is_featured = models.BooleanField(default=False, db_index=True)
@@ -31,3 +59,4 @@ class LatestUpdate(models.Model):
         if not self.slug and self.title:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+

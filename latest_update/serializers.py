@@ -1,14 +1,46 @@
 from django.template.defaultfilters import slugify
 from rest_framework import serializers
 
-from .models import LatestUpdate
+from .models import Category, LatestUpdate
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            "id",
+            "name",
+            "slug",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "slug", "created_at", "updated_at"]
+
+    def validate(self, attrs):
+        name = attrs.get("name")
+        if name and not attrs.get("slug"):
+            base_slug = slugify(name)
+            slug = base_slug
+            count = 1
+            qs = Category.objects.all()
+            if self.instance:
+                qs = qs.exclude(pk=self.instance.pk)
+            while qs.filter(slug=slug).exists():
+                slug = f"{base_slug}-{count}"
+                count += 1
+            attrs["slug"] = slug
+        return attrs
 
 
 class LatestUpdateSerializer(serializers.ModelSerializer):
+    category_details = CategorySerializer(source="category", read_only=True)
+
     class Meta:
         model = LatestUpdate
         fields = [
             "id",
+            "category",
+            "category_details",
             "title",
             "slug",
             "short_description",
