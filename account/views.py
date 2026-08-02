@@ -46,9 +46,16 @@ class UserEmailVerificationAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         token = request.data.get("token")
+        password = request.data.get("password")
+
         if not token:
             return Response(
                 {"detail": "Token is required."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not password:
+            return Response(
+                {"detail": "Password is required."}, status=status.HTTP_400_BAD_REQUEST
             )
 
         from account.services.verification_service import verify_token_and_get_user
@@ -61,17 +68,15 @@ class UserEmailVerificationAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if user.is_active:
-            return Response(
-                {"message": "Email is already verified.", "email": user.email},
-                status=status.HTTP_200_OK,
-            )
-
+        user.set_password(password)
         user.is_active = True
         user.save()
 
         return Response(
-            {"message": "Email verified successfully.", "email": user.email},
+            {
+                "message": "Email verified and password set successfully.",
+                "email": user.email,
+            },
             status=status.HTTP_200_OK,
         )
 
