@@ -67,11 +67,9 @@ class EvacuationCentre(models.Model):
             if self.pk:
                 qs = qs.exclude(pk=self.pk)
             if qs.exists():
-                raise ValidationError(
-                    {
-                        "compound_name": "Duplicate data: An evacuation centre with this compound name already exists."
-                    }
-                )
+                raise ValidationError({
+                    "compound_name": "Duplicate data: An evacuation centre with this compound name already exists."
+                })
 
     def __str__(self):
         return f"{self.compound_name} - {self.organization}"
