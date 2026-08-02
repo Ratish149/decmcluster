@@ -54,7 +54,8 @@ class LatestUpdateListCreateAPIView(ListCreateAPIView):
     ]
     filterset_class = LatestUpdateFilter
     search_fields = [
-        "title", ]
+        "title",
+    ]
     ordering_fields = ["created_at", "updated_at", "title", "is_featured"]
     ordering = ["-created_at"]
 
@@ -72,4 +73,3 @@ class LatestUpdateDetailAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated(), RoleBasedPermission()]
-

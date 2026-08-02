@@ -34,10 +34,74 @@ def to_bool(val):
     return val_str in ("yes", "true", "1")
 
 
+def find_duplicate_compound_names(file_obj):
+    """
+    Scans an uploaded Excel/CSV file object and returns a list of duplicate compound names
+    (duplicates within the file itself or matching existing compound names in DB).
+    """
+    file_name = getattr(file_obj, "name", "").lower()
+    if hasattr(file_obj, "seek"):
+        file_obj.seek(0)
+
+    raw_names = []
+    if file_name.endswith(".csv"):
+        content = file_obj.read()
+        if isinstance(content, bytes):
+            try:
+                decoded = content.decode("utf-8")
+            except UnicodeDecodeError:
+                decoded = content.decode("latin-1")
+        else:
+            decoded = content
+        csv_file = io.StringIO(decoded)
+        reader = csv.reader(csv_file)
+        rows = list(reader)
+
+        header_index = 0
+        for idx, row in enumerate(rows[:5]):
+            if len(row) > 3 and (
+                row[0].strip().lower() == "country"
+                or row[1].strip().lower() == "organisation"
+            ):
+                header_index = idx
+                break
+
+        for row in rows[header_index + 1 :]:
+            if len(row) > 3 and row[3] and str(row[3]).strip():
+                raw_names.append(str(row[3]).strip())
+    else:
+        wb = openpyxl.load_workbook(file_obj, data_only=True)
+        sheet = wb.active
+        for r in range(4, sheet.max_row + 1):
+            val = sheet.cell(row=r, column=4).value
+            if val and str(val).strip():
+                raw_names.append(str(val).strip())
+
+    if hasattr(file_obj, "seek"):
+        file_obj.seek(0)
+
+    duplicates = set()
+    seen_in_file = set()
+
+    existing_db_names = set(
+        EvacuationCentre.objects.values_list("compound_name", flat=True)
+    )
+    existing_db_lower = {name.lower().strip() for name in existing_db_names if name}
+
+    for name in raw_names:
+        name_lower = name.lower().strip()
+        if name_lower in seen_in_file or name_lower in existing_db_lower:
+            duplicates.add(name)
+        else:
+            seen_in_file.add(name_lower)
+
+    return list(duplicates)
+
+
 def import_evacuation_centres_from_excel(file_path):
     """
-    Reads Evacuation Centres from an Excel sheet and creates them directly in the DB
-    without checking for existing records.
+    Reads Evacuation Centres from an Excel sheet and creates them in the DB,
+    skipping rows with duplicate compound names.
     """
     if hasattr(file_path, "read"):
         wb = openpyxl.load_workbook(file_path, data_only=True)
@@ -45,7 +109,12 @@ def import_evacuation_centres_from_excel(file_path):
         wb = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
     sheet = wb.active
 
+    existing_db_names = set(
+        EvacuationCentre.objects.values_list("compound_name", flat=True)
+    )
+    seen_names = {name.lower().strip() for name in existing_db_names if name}
     created_count = 0
+    skipped_count = 0
 
     # Headers start at row 3, data starts at row 4
     for r in range(4, sheet.max_row + 1):
@@ -93,6 +162,16 @@ def import_evacuation_centres_from_excel(file_path):
         if not compound_name or not str(compound_name).strip():
             continue
 
+        compound_name_clean = str(compound_name).strip()
+        if compound_name_clean.lower() in seen_names:
+            logger.warning(
+                f"Duplicate data: compound name '{compound_name_clean}' already exists. Skipping row {r}."
+            )
+            skipped_count += 1
+            continue
+
+        seen_names.add(compound_name_clean.lower())
+
         # Coordinate parsing
         try:
             latitude_val = float(latitude) if latitude is not None else 0.0
@@ -102,7 +181,7 @@ def import_evacuation_centres_from_excel(file_path):
             longitude_val = 0.0
 
         EvacuationCentre.objects.create(
-            compound_name=str(compound_name).strip(),
+            compound_name=compound_name_clean,
             latitude=latitude_val,
             longitude=longitude_val,
             country=str(country).strip() if country else "",
@@ -170,13 +249,13 @@ def import_evacuation_centres_from_excel(file_path):
         )
         created_count += 1
 
-    return created_count, 0
+    return created_count, skipped_count
 
 
 def import_evacuation_centres_from_csv(file_obj):
     """
-    Reads Evacuation Centres from a CSV file and creates them directly in the DB
-    without checking for existing records.
+    Reads Evacuation Centres from a CSV file and creates them in the DB,
+    skipping rows with duplicate compound names.
     """
     content = file_obj.read()
     if isinstance(content, bytes):
@@ -203,7 +282,12 @@ def import_evacuation_centres_from_csv(file_obj):
 
     data_rows = rows[header_row_index + 1 :]
 
+    existing_db_names = set(
+        EvacuationCentre.objects.values_list("compound_name", flat=True)
+    )
+    seen_names = {name.lower().strip() for name in existing_db_names if name}
     created_count = 0
+    skipped_count = 0
 
     for row in data_rows:
         if not row or len(row) < 4:
@@ -256,6 +340,16 @@ def import_evacuation_centres_from_csv(file_obj):
         if not compound_name or not str(compound_name).strip():
             continue
 
+        compound_name_clean = str(compound_name).strip()
+        if compound_name_clean.lower() in seen_names:
+            logger.warning(
+                f"Duplicate data: compound name '{compound_name_clean}' already exists. Skipping."
+            )
+            skipped_count += 1
+            continue
+
+        seen_names.add(compound_name_clean.lower())
+
         # Coordinate parsing
         try:
             latitude_val = (
@@ -273,7 +367,7 @@ def import_evacuation_centres_from_csv(file_obj):
             longitude_val = 0.0
 
         EvacuationCentre.objects.create(
-            compound_name=str(compound_name).strip(),
+            compound_name=compound_name_clean,
             latitude=latitude_val,
             longitude=longitude_val,
             country=str(country).strip() if country else "",
@@ -341,4 +435,4 @@ def import_evacuation_centres_from_csv(file_obj):
         )
         created_count += 1
 
-    return created_count, 0
+    return created_count, skipped_count

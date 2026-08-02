@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
@@ -56,6 +57,21 @@ class EvacuationCentre(models.Model):
             models.Index(fields=["compound_name"]),
             models.Index(fields=["latitude", "longitude"]),
         ]
+
+    def clean(self):
+        super().clean()
+        if self.compound_name:
+            qs = EvacuationCentre.objects.filter(
+                compound_name__iexact=self.compound_name.strip()
+            )
+            if self.pk:
+                qs = qs.exclude(pk=self.pk)
+            if qs.exists():
+                raise ValidationError(
+                    {
+                        "compound_name": "Duplicate data: An evacuation centre with this compound name already exists."
+                    }
+                )
 
     def __str__(self):
         return f"{self.compound_name} - {self.organization}"
