@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import EmergencyAlert
+from .models import Announcement
 
 
-@admin.register(EmergencyAlert)
-class EmergencyAlertAdmin(admin.ModelAdmin):
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ("title", "slug", "link", "created_at", "updated_at")
     search_fields = ("title", "slug", "link")
     list_filter = ("created_at", "updated_at")

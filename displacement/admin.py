@@ -33,7 +33,6 @@ class DisplacementAdmin(ModelAdmin):
 @admin.register(DisplacementImport)
 class DisplacementImportAdmin(ModelAdmin):
     list_display = (
-        "id",
         "name",
         "file",
         "status",
@@ -54,5 +53,3 @@ class DisplacementImportAdmin(ModelAdmin):
     )
     ordering = ("-created_at",)
     readonly_fields = ("created_at", "updated_at")
-
-

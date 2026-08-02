@@ -6,7 +6,7 @@ from .models import Category, LatestUpdate
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    list_display = ("id", "name", "slug", "created_at", "updated_at")
+    list_display = ("name", "slug", "created_at", "updated_at")
     search_fields = ("name", "slug")
     prepopulated_fields = {"slug": ("name",)}
 
@@ -14,7 +14,6 @@ class CategoryAdmin(ModelAdmin):
 @admin.register(LatestUpdate)
 class LatestUpdateAdmin(ModelAdmin):
     list_display = (
-        "id",
         "title",
         "category",
         "slug",
@@ -32,4 +31,3 @@ class LatestUpdateAdmin(ModelAdmin):
         "category__name",
     )
     prepopulated_fields = {"slug": ("title",)}
-

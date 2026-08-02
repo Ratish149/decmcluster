@@ -38,7 +38,6 @@ class FiveWActivityAdmin(ModelAdmin):
 @admin.register(FiveWImport)
 class FiveWImportAdmin(ModelAdmin):
     list_display = (
-        "id",
         "name",
         "file",
         "status",

@@ -10,9 +10,9 @@ def get_emergency_alerts() -> QuerySet[EmergencyAlert]:
     return EmergencyAlert.objects.all().order_by("-created_at")
 
 
-def get_emergency_alert_by_id(alert_id: int) -> Optional[EmergencyAlert]:
-    """Retrieve a single emergency alert by ID."""
+def get_emergency_alert_by_slug(slug: str) -> Optional[EmergencyAlert]:
+    """Retrieve a single emergency alert by slug."""
     try:
-        return EmergencyAlert.objects.get(id=alert_id)
+        return EmergencyAlert.objects.get(slug=slug)
     except EmergencyAlert.DoesNotExist:
         return None

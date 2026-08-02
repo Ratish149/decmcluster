@@ -38,7 +38,6 @@ class VillageAssessmentAdmin(ModelAdmin):
 @admin.register(VillageAssessmentImport)
 class VillageAssessmentImportAdmin(ModelAdmin):
     list_display = (
-        "id",
         "name",
         "file",
         "status",

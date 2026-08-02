@@ -12,7 +12,7 @@ urlpatterns = [
         name="emergency-alert-list-create",
     ),
     path(
-        "emergency-alerts/<int:pk>/",
+        "emergency-alerts/<slug:slug>/",
         EmergencyAlertDetailAPIView.as_view(),
         name="emergency-alert-detail",
     ),

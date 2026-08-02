@@ -42,6 +42,7 @@ urlpatterns = (
         path("api/", include("village_assessment.urls")),
         path("api/", include("latest_update.urls")),
         path("api/", include("emergency_alert.urls")),
+        path("api/", include("announcement.urls")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

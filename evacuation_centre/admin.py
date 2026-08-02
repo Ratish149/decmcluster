@@ -38,7 +38,6 @@ class EvacuationCentreAdmin(ModelAdmin):
 @admin.register(EvacuationCentreImport)
 class EvacuationCentreImportAdmin(ModelAdmin):
     list_display = (
-        "id",
         "file",
         "status",
         "uploaded_by",
@@ -57,4 +56,3 @@ class EvacuationCentreImportAdmin(ModelAdmin):
     )
     ordering = ("-created_at",)
     readonly_fields = ("created_at", "updated_at")
-

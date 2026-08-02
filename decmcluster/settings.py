@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     "village_assessment",
     "latest_update",
     "emergency_alert",
+    "announcement",
     "decmcluster.apps.DecmClusterConfig",
 ]
 

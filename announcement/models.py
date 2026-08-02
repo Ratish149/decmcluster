@@ -1,23 +1,23 @@
 from django.db import models
-from django.template.defaultfilters import slugify
+from django.utils.text import slugify
 
 
-class EmergencyAlert(models.Model):
+class Announcement(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
-    link = models.URLField(max_length=255)
+    link = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Emergency Alert"
-        verbose_name_plural = "Emergency Alerts"
+        verbose_name = "Announcement"
+        verbose_name_plural = "Announcements"
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=["-created_at"]),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
     def save(self, *args, **kwargs):

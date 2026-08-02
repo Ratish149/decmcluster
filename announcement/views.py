@@ -6,22 +6,22 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from account.permissions import RoleBasedPermission
 from decmcluster.pagination import CustomPagination
 
-from .filters import EmergencyAlertFilter
-from .models import EmergencyAlert
-from .selectors.emergency_alert_selector import get_emergency_alerts
-from .serializers import EmergencyAlertSerializer
+from .filters import AnnouncementFilter
+from .models import Announcement
+from .selectors.announcement_selector import get_announcements
+from .serializers import AnnouncementSerializer
 
 
-class EmergencyAlertListCreateAPIView(ListCreateAPIView):
-    queryset = get_emergency_alerts()
-    serializer_class = EmergencyAlertSerializer
+class AnnouncementListCreateAPIView(ListCreateAPIView):
+    queryset = get_announcements()
+    serializer_class = AnnouncementSerializer
     pagination_class = CustomPagination
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    filterset_class = EmergencyAlertFilter
+    filterset_class = AnnouncementFilter
     search_fields = ["title"]
     ordering_fields = ["created_at", "updated_at", "title"]
     ordering = ["-created_at"]
@@ -32,9 +32,9 @@ class EmergencyAlertListCreateAPIView(ListCreateAPIView):
         return [IsAuthenticated(), RoleBasedPermission()]
 
 
-class EmergencyAlertDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = EmergencyAlert.objects.all()
-    serializer_class = EmergencyAlertSerializer
+class AnnouncementDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
     lookup_field = "slug"
 
     def get_permissions(self):
