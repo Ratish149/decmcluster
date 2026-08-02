@@ -63,6 +63,8 @@ class HistoricalEventsSerializer(serializers.ModelSerializer):
             "event",
             "year",
             "impact",
+            "image",
+            "description",
         ]
         read_only_fields = ["id"]
 
@@ -115,6 +117,7 @@ class PowerBiIframeSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "iframe_link",
+            "image",
             "created_at",
             "updated_at",
         ]

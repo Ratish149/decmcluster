@@ -55,6 +55,8 @@ class HistoricalEvents(models.Model):
     event = models.CharField(max_length=100)
     year = models.IntegerField()
     impact = models.CharField(max_length=100)
+    image = models.FileField(upload_to="historical_events", null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ["year"]
@@ -97,6 +99,7 @@ class Banner(models.Model):
 
 class PowerBiIframe(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
+    image = models.FileField(upload_to="power_bi_iframe", null=True, blank=True)
     iframe_link = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
