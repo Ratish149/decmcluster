@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     "latest_update",
     "emergency_alert",
     "announcement",
+    "archive",
     "decmcluster.apps.DecmClusterConfig",
 ]
 
