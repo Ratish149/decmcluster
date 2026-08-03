@@ -97,19 +97,13 @@ class UserLoginSerializer(serializers.Serializer):
         # Find active user by email only
         user = User.objects.filter(email__iexact=email).first()
 
-        if not user:
+        if not user or not user.check_password(password):
             raise serializers.ValidationError({
                 "non_field_errors": ["Invalid credentials."]
             })
-
-        if not user.check_password(password):
-            raise serializers.ValidationError({
-                "non_field_errors": ["Invalid Password."]
-            })
-
         if not user.is_active:
             raise serializers.ValidationError({
-                "non_field_errors": ["User account is not Verified."]
+                "non_field_errors": ["Invalid credentials."]
             })
 
         # Generate Simple JWT tokens

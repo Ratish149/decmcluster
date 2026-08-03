@@ -43,7 +43,8 @@ class FiveWActivityRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 class FiveWImportListCreateAPIView(ListCreateAPIView):
     queryset = (
-        FiveWImport.objects.all()
+        FiveWImport.objects
+        .all()
         .select_related("uploaded_by", "verified_by")
         .order_by("-created_at")
     )
