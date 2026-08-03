@@ -4,11 +4,12 @@ azure-storage-blob==12.30.0
 certifi==2026.6.17
 cffi==2.0.0
 charset-normalizer==3.4.7
-cryptography==49.0.0
+cryptography==50.0.0
 Django==6.0.6
 django-cors-headers==4.9.0
 django-filter==25.2
 django-storages==1.14.6
+django-tinymce==5.0.0
 django-unfold==0.97.0
 djangorestframework==3.17.1
 djangorestframework_simplejwt==5.5.1
