@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Contact Message Received</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .wrapper {
+      background-color: #f3f4f6;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .description {
+      font-size: 16px;
+      color: #4b5563;
+      line-height: 24px;
+      margin-bottom: 24px;
+    }
+    .details-card {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .details-table th, .details-table td {
+      padding: 10px 0;
+      font-size: 15px;
+      text-align: left;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+    .details-table tr:last-child th, .details-table tr:last-child td {
+      border-bottom: none;
+    }
+    .details-table th {
+      color: #6b7280;
+      font-weight: 500;
+      width: 120px;
+      vertical-align: top;
+    }
+    .details-table td {
+      color: #1f2937;
+      font-weight: 600;
+      word-break: break-word;
+    }
+    .footer {
+      background-color: #f9fafb;
+      padding: 20px 30px;
+      text-align: center;
+      border-top: 1px solid #e5e7eb;
+    }
+    .footer p {
+      font-size: 13px;
+      color: #9ca3af;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <h1>DECM Cluster</h1>
+      </div>
+      <div class="content">
+        <h2 class="title">New Contact Submission Received</h2>
+        <p class="description">
+          A new contact message has been submitted through the portal. Below are the details of the inquiry:
+        </p>
+        <div class="details-card">
+          <table class="details-table">
+            <tr>
+              <th>Full Name:</th>
+              <td>{{ full_name }}</td>
+            </tr>
+            <tr>
+              <th>Email:</th>
+              <td>
+                {% if email != "N/A" %}
+                  <a href="mailto:{{ email }}" style="color: #2563eb; text-decoration: none;">{{ email }}</a>
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Phone:</th>
+              <td>{{ phone }}</td>
+            </tr>
+            <tr>
+              <th>Message:</th>
+              <td>{{ message }}</td>
+            </tr>
+            <tr>
+              <th>Submitted At:</th>
+              <td>{{ created_at|date:"F j, Y, g:i a" }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="footer">
+        <p>This is an automated notification. Please do not reply directly to this email.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
