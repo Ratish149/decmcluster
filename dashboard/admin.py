@@ -1,5 +1,6 @@
 from django.contrib import admin
-from tinymce.widgets import TinyMCE
+
+# from tinymce.widgets import TinyMCE
 from unfold.admin import ModelAdmin
 
 from .models import (
@@ -55,9 +56,9 @@ class HistoricalEventsAdmin(ModelAdmin):
     list_display = ["event", "year", "impact"]
     search_fields = ["event", "impact"]
     list_filter = ["year"]
-    widgets = {
-        "description": TinyMCE(attrs={"cols": 80, "rows": 30}),
-    }
+    # widgets = {
+    #     "description": TinyMCE(attrs={"cols": 80, "rows": 30}),
+    # }
 
 
 @admin.register(EvacuationCentreList)
