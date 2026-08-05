@@ -82,6 +82,42 @@ class UserEmailVerificationAPIView(APIView):
         )
 
 
+class ResendVerificationEmailAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        user_id = request.data.get("user_id")
+
+        if not user_id:
+            return Response(
+                {"detail": "user_id is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if user.is_active:
+            return Response(
+                {"detail": "User is already verified and active."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        from account.services.user_service import send_verification_email
+
+        send_verification_email(user)
+
+        return Response(
+            {"message": "Verification email resent successfully."},
+            status=status.HTTP_200_OK,
+        )
+
+
 class UserLoginAPIView(APIView):
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "login"
